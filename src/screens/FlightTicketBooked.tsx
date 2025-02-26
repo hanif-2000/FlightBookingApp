@@ -4,7 +4,8 @@ import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Foundation from 'react-native-vector-icons/Foundation';
-import Icon from 'react-native-vector-icons/Entypo';
+import ScreenLayout from '../components/ScreenLayout';
+import FarePolicies from '../components/FarePolicies';
 
 const bookingData = {
   id: 'IH12839757909943230',
@@ -17,42 +18,46 @@ const bookingData = {
   status: 'Confirmed',
 };
 
-const FlightTicketBooked = ({navigation}:any) => {
+const FlightTicketBooked = ({navigation}: any) => {
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, backgroundColor: '#141414'}}>
-      <BookingDetails booking={bookingData} />
-      <FlightTicket />
-      <FlightTicket2
-        departureTime="07:55"
-        arrivalTime="10:20"
-        duration="2H 55M"
-        departureCity="Bangalore"
-        arrivalCity="Hyderabad"
-        departureCode="BLR"
-        arrivalCode="HYD"
-        departureAirport="Indira Gandhi International Airport"
-        arrivalAirport="Chhatrapati Shivaji International Airport"
-        departureTerminal="1"
-        arrivalTerminal="2"
-      />
+    <ScreenLayout back>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        style={{flex: 1, backgroundColor: '#141414'}}>
+        <BookingDetails booking={bookingData} />
+        <FlightTicket />
+        <FlightTicket2
+          departureTime="07:55"
+          arrivalTime="10:20"
+          duration="2H 55M"
+          departureCity="Bangalore"
+          arrivalCity="Hyderabad"
+          departureCode="BLR"
+          arrivalCode="HYD"
+          departureAirport="Indira Gandhi International Airport"
+          arrivalAirport="Chhatrapati Shivaji International Airport"
+          departureTerminal="1"
+          arrivalTerminal="2"
+        />
 
-      <Layover />
+        <Layover />
 
-      <FlightTicket2
-        departureTime="07:55"
-        arrivalTime="10:20"
-        duration="2H 55M"
-        departureCity="New Delhi"
-        arrivalCity="Mumbai"
-        departureCode="DEL"
-        arrivalCode="BOM"
-        departureAirport="Indira Gandhi International Airport"
-        arrivalAirport="Chhatrapati Shivaji International Airport"
-        departureTerminal="1"
-        arrivalTerminal="2"
-      />
-      <BillingDetails navigation={navigation} />
-    </ScrollView>
+        <FlightTicket2
+          departureTime="07:55"
+          arrivalTime="10:20"
+          duration="2H 55M"
+          departureCity="New Delhi"
+          arrivalCity="Mumbai"
+          departureCode="DEL"
+          arrivalCode="BOM"
+          departureAirport="Indira Gandhi International Airport"
+          arrivalAirport="Chhatrapati Shivaji International Airport"
+          departureTerminal="1"
+          arrivalTerminal="2"
+        />
+        <BillingDetails navigation={navigation} />
+      </ScrollView>
+    </ScreenLayout>
   );
 };
 
@@ -281,23 +286,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
-  policyCard: {
-    backgroundColor: '#1E1E1E',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#333',
-    marginHorizontal: 15,
-  },
-  policyTitle: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-  },
   sectionTitle: {
     color: '#FFFFFF99',
     fontSize: 12,
@@ -638,24 +626,8 @@ const BillingDetails = ({navigation}: any) => {
         </Text>
       </View>
 
-      <Text style={styles.sectionTitle}>FARE POLICIES</Text>
-      <PolicyCard
-        title="Baggage Policy"
-        onPress={() => navigation.navigate('Policies', {policyType: 'baggage'})}
-      />
-      <PolicyCard
-        title="Cancellation Policy"
-        onPress={() =>
-          navigation.navigate('Policies', {policyType: 'cancellation'})
-        }
-      />
-      <PolicyCard
-        title="Reschedule Policy"
-        onPress={() =>
-          navigation.navigate('Policies', {policyType: 'reschedule'})
-        }
-      />
 
+<FarePolicies/>
       {/* Customer Support */}
       <Text style={styles.sectionTitle}>CUSTOMER HELP & SUPPORT</Text>
       <TouchableOpacity style={styles.supportBox}>
@@ -686,17 +658,6 @@ const DownloadButton = ({icon, text}: {icon: any; text: string}) => (
   </TouchableOpacity>
 );
 
-interface PolicyCardProps {
-  title: string;
-  onPress: () => void;
-}
-
-const PolicyCard: React.FC<PolicyCardProps> = ({title, onPress}) => (
-  <TouchableOpacity style={styles.policyCard} onPress={onPress}>
-    <Text style={styles.policyTitle}>{title}</Text>
-    <Icon name="info-with-circle" size={16} color="#fff" />
-  </TouchableOpacity>
-);
 
 // Action Button Component
 const ActionButton = ({icon, text}: {icon: any; text: string}) => (

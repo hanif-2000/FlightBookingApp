@@ -25,6 +25,7 @@ const BookingOptions = ({
               colors={['#1CAEDC', '#10E0F9']}
               style={styles.gradient}>
               <TouchableOpacity
+                activeOpacity={0.7}
                 key={item.id}
                 style={[styles.option, selected === item.id && styles.selected]}
                 onPress={() => onSelect(item.id)}>
@@ -44,6 +45,7 @@ const BookingOptions = ({
             </LinearGradient>
           ) : (
             <TouchableOpacity
+              activeOpacity={0.7}
               key={item.id}
               style={[
                 styles.option,

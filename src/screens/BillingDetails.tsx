@@ -11,6 +11,7 @@ import {
 import Collapsible from 'react-native-collapsible';
 import CustomDropdown from '../components/CustomDropdown';
 import ScreenLayout from '../components/ScreenLayout';
+import KeyboardAwareWrapper from '../components/KeyboardAwareWrapper';
 
 const cityNames = [
   {label: 'BLR - Bengaluru', value: 'BLR'},
@@ -27,13 +28,14 @@ const BillingDetails = ({navigation}:any) => {
 
   // Use `useCallback` to prevent unnecessary re-renders
   const toggleCollapse = useCallback(() => {
-    setIsCollapsed(prevState => !prevState);
+    setIsCollapsed(!isCollapsed);
   }, []);
 
 
   return (
     <ScreenLayout step={3} back>
       <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 140}}>
+      <KeyboardAwareWrapper>
         <View style={styles.container}>
           {/* Billing Details Header */}
           <View style={styles.header}>
@@ -118,6 +120,8 @@ const BillingDetails = ({navigation}:any) => {
               onSelect={setState}
             />
         </View>
+        </KeyboardAwareWrapper>
+
       </ScrollView>
       {/* Fare Summary */}
       <View style={styles.bottomView}>
@@ -128,8 +132,8 @@ const BillingDetails = ({navigation}:any) => {
           </Text>
           <Text style={styles.arrowIcon}>{isCollapsed ? '▼' : '▲'}</Text>
         </TouchableOpacity>
-
-        <Collapsible collapsed={isCollapsed}>
+ 
+         <Collapsible collapsed={isCollapsed}>
           <View style={styles.fareDetails}>
             <View style={styles.row}>
               <Text style={styles.label}>Fare Type</Text>

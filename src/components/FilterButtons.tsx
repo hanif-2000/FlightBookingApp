@@ -59,7 +59,13 @@ const CLASSTYPES = [
 
 const FILTER_LABELS = ['Cheapest', 'Fastest', 'Non-stop'];
 
-const SelectableButton = ({label, isSelected, onPress}) => (
+interface SelectableButtonProps {
+  label?: string;
+  onPress: () => void;
+  isSelected?:boolean;
+}
+
+const SelectableButton = ({label, isSelected, onPress}:SelectableButtonProps) => (
   <TouchableOpacity
     style={[
       styles.selectableButton,

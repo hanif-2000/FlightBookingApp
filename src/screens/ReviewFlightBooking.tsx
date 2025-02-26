@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import Collapsible from 'react-native-collapsible';
 import FlightDetailsCard from '../components/FlightDetailsCard';
 import FlightCard from '../components/FlightCard';
 import ScreenLayout from '../components/ScreenLayout';
+import FarePolicies from '../components/FarePolicies';
 
 const flights = [
   {
@@ -39,19 +40,7 @@ const flights = [
   },
 ];
 
-interface PolicyCardProps {
-  title: string;
-  onPress: () => void;
-}
-
-const PolicyCard: React.FC<PolicyCardProps> = ({ title, onPress }) => (
-  <TouchableOpacity style={styles.policyCard} onPress={onPress}>
-    <Text style={styles.policyTitle}>{title}</Text>
-    <Icon name="info-with-circle" size={16} color="#fff" />
-  </TouchableOpacity>
-);
-
-const ReviewFlightBooking = ({ navigation }: any) => {
+const ReviewFlightBooking = ({navigation}: any) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Use `useCallback` to prevent unnecessary re-renders
@@ -80,33 +69,23 @@ const ReviewFlightBooking = ({ navigation }: any) => {
         <FlatList
           data={flights}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <FlightCard {...item} detailsButton="FLIGHT DETAILS" />
           )}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
         />
 
-        <Text style={styles.sectionTitle}>FARE POLICIES</Text>
-        <PolicyCard
-          title="Baggage Policy"
-          onPress={() => navigation.navigate('Policies', { policyType: 'baggage' })}
-        />
-        <PolicyCard
-          title="Cancellation Policy"
-          onPress={() => navigation.navigate('Policies', { policyType: 'cancellation' })}
-        />
-        <PolicyCard
-          title="Reschedule Policy"
-          onPress={() => navigation.navigate('Policies', { policyType: 'reschedule' })}
-        />
+        <FarePolicies />
       </ScrollView>
 
       {/* Fare Summary */}
       <View style={styles.bottomView}>
         <Text style={styles.fareSummaryText}>Fare Summary</Text>
         <TouchableOpacity style={styles.toggleButton} onPress={toggleCollapse}>
-          <Text style={styles.travelerText}>6 Travelers - 2 Adult, 1 Child, 1 Infant</Text>
+          <Text style={styles.travelerText}>
+            6 Travelers - 2 Adult, 1 Child, 1 Infant
+          </Text>
           <Text style={styles.arrowIcon}>{isCollapsed ? '▼' : '▲'}</Text>
         </TouchableOpacity>
 
@@ -136,13 +115,14 @@ const ReviewFlightBooking = ({ navigation }: any) => {
           <View style={styles.applyButton}>
             <Text style={styles.applyButtonText}>+ 2,150 per adult</Text>
           </View>
-          <TouchableOpacity style={styles.bookButton} onPress={()=>navigation.navigate('ReviewTraveler')}>
+          <TouchableOpacity
+            style={styles.bookButton}
+            onPress={() => navigation.navigate('ReviewTraveler')}>
             <Text style={styles.bookButtonText}>REVIEW TRAVELERS</Text>
           </TouchableOpacity>
         </View>
       </View>
-    {/* </View> */}
-
+      {/* </View> */}
     </ScreenLayout>
   );
 };
@@ -163,22 +143,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     marginVertical: 8,
-  },
-  policyCard: {
-    backgroundColor: '#1E1E1E',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#333',
-  },
-  policyTitle: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
   },
   bottomView: {
     padding: 15,

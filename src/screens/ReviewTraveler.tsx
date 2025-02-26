@@ -1,14 +1,16 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, forwardRef, useRef} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Collapsible from 'react-native-collapsible';
 import ScreenLayout from '../components/ScreenLayout';
+import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 
 const passengers = [
   {id: '1', name: 'SAYEED AFZAL', age: 28, gender: 'Male', country: 'Indian'},
@@ -61,7 +63,7 @@ const TravelersCard = () => {
   );
 };
 
-const PassengerListScreen = ({navigation}:any) => {
+const PassengerListScreen = ({navigation}: any) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Use `useCallback` to prevent unnecessary re-renders
@@ -69,9 +71,22 @@ const PassengerListScreen = ({navigation}:any) => {
     setIsCollapsed(prevState => !prevState);
   }, []);
 
+  const actionSheetRef = useRef<ActionSheetRef>(null);
+
+  // Old data (can be fetched from API or stored locally)
+  const oldTravelerData = {
+    firstName: 'John',
+    lastName: 'Doe',
+    gender: 'Male',
+    age: '25',
+    nationality: 'Indian',
+  };
+
   return (
     <ScreenLayout step={2} back>
-      <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 140}}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        style={{flex: 1, marginBottom: 140}}>
         <View style={styles.container}>
           <TravelersCard />
           <ReviewAlert />
@@ -84,7 +99,8 @@ const PassengerListScreen = ({navigation}:any) => {
                     age: {item.age} gender: {item.gender} country:{item.country}
                   </Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => actionSheetRef.current?.show()}>
                   <Icon
                     name="pencil-circle-outline"
                     size={24}
@@ -133,15 +149,16 @@ const PassengerListScreen = ({navigation}:any) => {
           </View>
           <TouchableOpacity
             style={styles.bookButton}
-            onPress={()=>navigation.navigate('BillingDetails')}
-          >
+            onPress={() => navigation.navigate('BillingDetails')}>
             <Text style={styles.bookButtonText}>REVIEW TRAVELERS</Text>
           </TouchableOpacity>
         </View>
+        <TravelerDetailsSheet ref={actionSheetRef} oldData={oldTravelerData} />
       </View>
     </ScreenLayout>
   );
 };
+export default PassengerListScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -314,4 +331,130 @@ const travelCardStyles = StyleSheet.create({
   },
 });
 
-export default PassengerListScreen;
+interface TravelerDetailsSheetProps {
+  oldData?: {
+    firstName: string;
+    lastName: string;
+    gender: string;
+    age: string;
+    nationality: string;
+  };
+}
+
+const TravelerDetailsSheet = forwardRef<
+  ActionSheetRef,
+  TravelerDetailsSheetProps
+>(({oldData}, ref) => {
+  const [firstName, setFirstName] = useState(oldData?.firstName || '');
+  const [lastName, setLastName] = useState(oldData?.lastName || '');
+  const [gender, setGender] = useState(oldData?.gender || '');
+  const [age, setAge] = useState(oldData?.age || '');
+  const [nationality, setNationality] = useState(oldData?.nationality || '');
+
+  return (
+    <ActionSheet
+      ref={ref}
+      containerStyle={TravelerDetailsSheetStyles.sheetContainer}>
+      <View style={TravelerDetailsSheetStyles.content}>
+        <Text style={TravelerDetailsSheetStyles.title}>
+          ADD TRAVELER DETAILS
+        </Text>
+
+        <Text style={TravelerDetailsSheetStyles.label}>First Name</Text>
+        <TextInput
+          style={TravelerDetailsSheetStyles.input}
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder="Enter traveler's first name"
+          placeholderTextColor="#666"
+        />
+
+        <Text style={TravelerDetailsSheetStyles.label}>Last Name</Text>
+        <TextInput
+          style={TravelerDetailsSheetStyles.input}
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder="Enter traveler’s second name"
+          placeholderTextColor="#666"
+        />
+
+        <Text style={TravelerDetailsSheetStyles.label}>Gender</Text>
+        <TextInput
+          style={TravelerDetailsSheetStyles.input}
+          value={gender}
+          onChangeText={setGender}
+          placeholder="Enter gender"
+          placeholderTextColor="#666"
+        />
+
+        <Text style={TravelerDetailsSheetStyles.label}>Age</Text>
+        <TextInput
+          style={TravelerDetailsSheetStyles.input}
+          value={age}
+          onChangeText={setAge}
+          placeholder="Enter age"
+          placeholderTextColor="#666"
+        />
+
+        <Text style={TravelerDetailsSheetStyles.label}>Nationality</Text>
+        <TextInput
+          style={TravelerDetailsSheetStyles.input}
+          value={nationality}
+          onChangeText={setNationality}
+          placeholder="Enter nationality"
+          placeholderTextColor="#666"
+        />
+
+        <TouchableOpacity style={TravelerDetailsSheetStyles.button}>
+          <Text style={TravelerDetailsSheetStyles.buttonText}>
+            UPDATE DETAILS
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ActionSheet>
+  );
+});
+
+const TravelerDetailsSheetStyles = StyleSheet.create({
+  sheetContainer: {
+    backgroundColor: '#222',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  content: {
+    padding: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginTop: 10,
+  },
+  input: {
+    height: 45,
+    backgroundColor: '#333',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    color: '#fff',
+    marginTop: 5,
+  },
+  button: {
+    backgroundColor: '#10E0F9',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});

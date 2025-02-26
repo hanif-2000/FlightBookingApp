@@ -20,23 +20,25 @@ const ScreenLayout: React.FC<ScreenLayoutProps> = ({
   step,
 }) => {
   return (
-    <View style={styles.container}>
-      <Header
-        back={back}
-        label={label || ''}
-        chat={chat}
-        user={user}
-        step={step}
-      />
-      <View style={styles.content}>{children}</View>
-    </View>
+    // <KeyboardAwareWrapper>
+      <View style={styles.container}>
+        <Header
+          back={back}
+          label={label || ''}
+          chat={chat}
+          user={user}
+          step={step}
+        />
+        <View style={styles.content}>{children}</View>
+      </View>
+    // </KeyboardAwareWrapper>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#141414',
   },
   content: {
     flex: 1,
