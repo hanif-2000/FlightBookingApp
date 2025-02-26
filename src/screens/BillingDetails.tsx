@@ -8,9 +8,9 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import Header from '../components/Header';
 import Collapsible from 'react-native-collapsible';
 import CustomDropdown from '../components/CustomDropdown';
+import ScreenLayout from '../components/ScreenLayout';
 
 const cityNames = [
   {label: 'BLR - Bengaluru', value: 'BLR'},
@@ -32,8 +32,7 @@ const BillingDetails = ({navigation}:any) => {
 
 
   return (
-    <>
-      <Header back step={3} />
+    <ScreenLayout step={3} back>
       <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 140}}>
         <View style={styles.container}>
           {/* Billing Details Header */}
@@ -164,7 +163,7 @@ const BillingDetails = ({navigation}:any) => {
           </TouchableOpacity>
         </View>
       </View>
-    </>
+    </ScreenLayout>
   );
 };
 

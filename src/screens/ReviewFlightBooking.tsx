@@ -9,10 +9,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Collapsible from 'react-native-collapsible';
-
-import Header from '../components/Header';
 import FlightDetailsCard from '../components/FlightDetailsCard';
 import FlightCard from '../components/FlightCard';
+import ScreenLayout from '../components/ScreenLayout';
 
 const flights = [
   {
@@ -61,8 +60,7 @@ const ReviewFlightBooking = ({ navigation }: any) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Header back step={1} />
+    <ScreenLayout step={1} back>
       <ScrollView keyboardShouldPersistTaps="handled" style={styles.scrollView}>
         {/* Flight Information */}
         <FlightDetailsCard
@@ -143,17 +141,15 @@ const ReviewFlightBooking = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    {/* </View> */}
+
+    </ScreenLayout>
   );
 };
 
 export default ReviewFlightBooking;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#121212',
-  },
   scrollView: {
     flex: 1,
     paddingHorizontal: 15,

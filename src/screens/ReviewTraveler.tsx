@@ -7,8 +7,8 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Header from '../components/Header';
 import Collapsible from 'react-native-collapsible';
+import ScreenLayout from '../components/ScreenLayout';
 
 const passengers = [
   {id: '1', name: 'SAYEED AFZAL', age: 28, gender: 'Male', country: 'Indian'},
@@ -70,8 +70,7 @@ const PassengerListScreen = ({navigation}:any) => {
   }, []);
 
   return (
-    <>
-      <Header back step={2} />
+    <ScreenLayout step={2} back>
       <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 140}}>
         <View style={styles.container}>
           <TravelersCard />
@@ -140,7 +139,7 @@ const PassengerListScreen = ({navigation}:any) => {
           </TouchableOpacity>
         </View>
       </View>
-    </>
+    </ScreenLayout>
   );
 };
 

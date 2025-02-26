@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import Header from '../components/Header';
+import ScreenLayout from '../components/ScreenLayout';
 
 const policies = [
   {
@@ -89,8 +89,7 @@ const PoliciesScreen = () => {
   };
 
   return (
-    <>
-    <Header back label={'policies'}/>
+    <ScreenLayout label={'policies'} back>
     <View style={styles.container}>
       {/* Policy Tabs */}
       <View style={styles.tabs}>
@@ -137,7 +136,7 @@ const PoliciesScreen = () => {
         </View>
       )}
     </View>
-    </>
+    </ScreenLayout>
   );
 };
 

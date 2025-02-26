@@ -6,12 +6,12 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import Header from '../components/Header';
 import BookingOptions from '../components/BookingOptions';
 import DatePickerComponent from '../components/DatePickerComponent';
 import CustomCheckbox from '../components/CustomCheckbox';
 import PrimaryButton from '../components/PrimaryButton';
 import CustomDropdown from '../components/CustomDropdown';
+import ScreenLayout from '../components/ScreenLayout';
 
 const FlightBookingScreen = ({navigation}: any) => {
   const [selectedOption, setSelectedOption] = useState('flight');
@@ -78,8 +78,7 @@ const FlightBookingScreen = ({navigation}: any) => {
   const showDatePickerReturn = () => setShowReturn(true); // Open the return date picker modal
 
   return (
-    <>
-      <Header label={'Gaya, India'} user chat />
+    <ScreenLayout label={'Gaya, India'} user chat>
       <View style={styles.container}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <KeyboardAvoidingView
@@ -148,7 +147,8 @@ const FlightBookingScreen = ({navigation}: any) => {
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
-    </>
+    </ScreenLayout>
+
   );
 };
 

@@ -56,10 +56,13 @@ const FlightDetailsCard = ({
       <View style={styles.separator} />
 
       <View style={styles.dateSection}>
-        <ScrollView keyboardShouldPersistTaps="handled" horizontal showsHorizontalScrollIndicator={false}>
-          {renderDateItem(classType, (icon = true))}
-          {renderDateItem(price, (icon = false))}
-          {renderDateItem(duration, (icon = false))}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          horizontal
+          showsHorizontalScrollIndicator={false}>
+          {classType && renderDateItem(classType, (icon = true))}
+          {price && renderDateItem(price, (icon = false))}
+          {duration && renderDateItem(duration, (icon = false))}
         </ScrollView>
       </View>
     </View>

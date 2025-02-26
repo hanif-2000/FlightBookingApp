@@ -1,12 +1,37 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useMemo} from 'react';
 import {StyleSheet, FlatList, View, TouchableOpacity, Text} from 'react-native';
 import FlightDetails from '../components/FlightDetails';
 import FilterButtons from '../components/FilterButtons';
-import Header from '../components/Header';
 import FlightCardSelectable from '../components/FlightCardSelectable';
+import ScreenLayout from '../components/ScreenLayout';
 
-// Flight data (extracted outside component for better structure)
-const flights = [
+type Flight = {
+  id: string;
+  airline: string;
+  classType: string;
+  date: string;
+  duration: string;
+  time1: string;
+  time2: string;
+  location1: string;
+  location2: string;
+  baggage1?: string;
+  baggage2?: string;
+  price: string;
+  airlineImg: any;
+  changeFlight?: string;
+  changeFlightStatus?: boolean;
+  airlineChangeFlight?: string;
+  classTypeChangeFlight?: string;
+  dateChangeFlight?: string;
+  durationChangeFlight?: string;
+  time1ChangeFlight?: string;
+  time2ChangeFlight?: string;
+  location1ChangeFlight?: string;
+  location2ChangeFlight?: string;
+};
+
+const flights: Flight[] = [
   {
     id: '1',
     airline: 'Air India',
@@ -59,26 +84,43 @@ const flights = [
     location2ChangeFlight: 'Mumbai',
   },
 ];
-
 const BookingScreen = ({navigation}: any) => {
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
+  const [selectedSortOptions, setSelectedSortOptions] = useState<Set<string>>(
+    new Set(),
+  );
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(
+    new Set(),
+  );
+  const [selectedFiltersOptions, setSelectedFiltersOptions] = useState<
+    Set<string>
+  >(new Set());
+  const [selectedClass, setSelectedClass] = useState<Set<string>>(new Set());
 
-  const selectedFlightDetails = flights.find(
-    flight => flight.id === selectedFlight,
+  // Toggle Selection Function
+  const toggleSelection = (
+    setSelection: React.Dispatch<React.SetStateAction<Set<string>>>,
+    option: string,
+  ) => {
+    setSelection(prev => {
+      const newSet = new Set(prev);
+      newSet.has(option) ? newSet.delete(option) : newSet.add(option);
+      return newSet;
+    });
+  };
+
+  const selectedFlightDetails = useMemo(
+    () => flights.find(flight => flight.id === selectedFlight),
+    [selectedFlight],
   );
 
-  // Handle flight selection
-  const handleSelectFlight = useCallback((id: string) => {
-    setSelectedFlight(id);
-  }, []);
-
-  // Render Flight Item
-  const renderFlightItem = ({item}: {item: (typeof flights)[0]}) => (
+  // Render Individual Flight
+  const renderFlightItem = ({item}: {item: Flight}) => (
     <FlightCardSelectable
       {...item}
       detailsButton="FLIGHT DETAILS"
       isSelected={item.id === selectedFlight}
-      onSelect={() => handleSelectFlight(item.id)}
+      onSelect={() => setSelectedFlight(item.id)}
       onFlightDetails={() => navigation.navigate('FlightDetails')}
     />
   );
@@ -95,13 +137,22 @@ const BookingScreen = ({navigation}: any) => {
         layoff={require('../../assets/layoff.png')}
         down={require('../../assets/trend-down.png')}
       />
-      <FilterButtons />
+      <FilterButtons
+        selectedSortOptions={selectedSortOptions}
+        selectedFilters={selectedFilters}
+        selectedFiltersOptions={selectedFiltersOptions}
+        selectedClass={selectedClass}
+        toggleSelection={toggleSelection}
+        setSelectedSortOptions={setSelectedSortOptions}
+        setSelectedFilters={setSelectedFilters}
+        setSelectedFiltersOptions={setSelectedFiltersOptions}
+        setSelectedClass={setSelectedClass}
+      />
     </View>
   );
 
   return (
-    <>
-      <Header back label="Change Flight" />
+    <ScreenLayout label={'Change Flight'} back>
       <View style={styles.mainContainer}>
         <FlatList
           data={flights}
@@ -112,7 +163,7 @@ const BookingScreen = ({navigation}: any) => {
           ListHeaderComponent={renderListHeader}
         />
 
-        {/* Fixed Footer Buttons */}
+        {/* Footer Buttons */}
         <View style={styles.footerButtons}>
           <View style={styles.applyButton}>
             <Text style={styles.applyButtonText}>
@@ -123,13 +174,12 @@ const BookingScreen = ({navigation}: any) => {
           </View>
           <TouchableOpacity
             style={styles.bookButton}
-            onPress={() => navigation.navigate('ReviewFlight')}
-          >
+            onPress={() => navigation.navigate('ReviewFlight')}>
             <Text style={styles.bookButtonText}>BOOK NOW</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </>
+    </ScreenLayout>
   );
 };
 
@@ -140,7 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   listContainer: {
-    paddingBottom: 100, // Ensure scrolling space above the buttons
+    paddingBottom: 100,
     paddingHorizontal: 20,
   },
   footerButtons: {

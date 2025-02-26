@@ -6,11 +6,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Header from '../components/Header';
 import FlightDetailsCard from '../components/FlightDetailsCard';
 import FlightCard from '../components/FlightCard';
 import {FlatList} from 'react-native-gesture-handler';
 import PolicySection from '../components/PolicySection';
+import ScreenLayout from '../components/ScreenLayout';
 
 const flights = [
   {
@@ -44,8 +44,7 @@ const FlightDetailsScreen = () => {
   );
 
   return (
-    <>
-      <Header back label="Flight Details" />
+    <ScreenLayout label={'Flight Details'} back>
       <ScrollView  keyboardShouldPersistTaps="handled" style={styles.container}>
         {/* Flight Information */}
         <FlightDetailsCard
@@ -143,7 +142,7 @@ const FlightDetailsScreen = () => {
           <Text style={styles.bookButtonText}>BOOK NOW</Text>
         </TouchableOpacity>
       </View>
-    </>
+    </ScreenLayout>
   );
 };
 

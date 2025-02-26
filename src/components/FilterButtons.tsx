@@ -77,24 +77,21 @@ const SelectableButton = ({label, isSelected, onPress}) => (
   </TouchableOpacity>
 );
 
-const FilterButtons = () => {
-  const [selectedSortOptions, setSelectedSortOptions] = useState(new Set());
-  const [selectedFilters, setSelectedFilters] = useState(new Set());
-  const [selectedFiltersOptions, setSelectedFiltersOptions] = useState(new Set());
-  const [selectedClass, setSelectedClass] = useState(new Set());
-
-  const toggleSelection = (setSelection, option) => {
-    setSelection(prevSet => {
-      const newSet = new Set(prevSet);
-      newSet.has(option) ? newSet.delete(option) : newSet.add(option);
-      return newSet;
-    });
-  };
-
+const FilterButtons = ({
+  selectedSortOptions,
+  selectedFilters,
+  selectedFiltersOptions,
+  selectedClass,
+  toggleSelection,
+  setSelectedSortOptions,
+  setSelectedFilters,
+  setSelectedFiltersOptions,
+  setSelectedClass,
+}: any) => {
   return (
     <View style={styles.container}>
       <ScrollView
-      keyboardShouldPersistTaps="handled"
+        keyboardShouldPersistTaps="handled"
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}>
@@ -103,7 +100,7 @@ const FilterButtons = () => {
             key={label}
             label={label}
             isSelected={selectedFilters.has(label)}
-            onPress={() => toggleSelection(setSelectedFilters, label)}
+            onPress={() => toggleSelection(setSelectedFilters, label)} // ✅ Use setter function
           />
         ))}
       </ScrollView>
@@ -113,21 +110,23 @@ const FilterButtons = () => {
           title="Sort"
           options={SORT_OPTIONS}
           selectedOptions={selectedSortOptions}
-          onSelect={option => toggleSelection(setSelectedSortOptions, option)}
+          onSelect={option => toggleSelection(setSelectedSortOptions, option)} // ✅ Use setter function
         />
         <FilterActionSheet
           title="Filters"
           options={FILTER_OPTIONS}
           classType={CLASSTYPES}
           selectedOptions={selectedFiltersOptions}
-          onSelect={option => toggleSelection(setSelectedFiltersOptions, option)}
+          onSelect={option => toggleSelection(setSelectedFiltersOptions, option)} // ✅ Use setter function
           selectedClass={selectedClass}
-          onSelectClass={option => toggleSelection(setSelectedClass, option)}
+          onSelectClass={option => toggleSelection(setSelectedClass, option)} // ✅ Use setter function
         />
       </View>
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
