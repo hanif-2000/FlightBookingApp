@@ -61,7 +61,7 @@ const TravelersCard = () => {
   );
 };
 
-const PassengerListScreen = ({navigation}) => {
+const PassengerListScreen = ({navigation}:any) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Use `useCallback` to prevent unnecessary re-renders

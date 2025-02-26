@@ -8,21 +8,18 @@ import {
 } from 'react-native';
 import Header from '../components/Header';
 import BookingOptions from '../components/BookingOptions';
-import Dropdown from '../components/Dropdown';
 import DatePickerComponent from '../components/DatePickerComponent';
 import CustomCheckbox from '../components/CustomCheckbox';
 import PrimaryButton from '../components/PrimaryButton';
+import CustomDropdown from '../components/CustomDropdown';
 
 const FlightBookingScreen = ({navigation}: any) => {
   const [selectedOption, setSelectedOption] = useState('flight');
   const [checked, setChecked] = useState(false);
 
-  const [fromOpen, setFromOpen] = useState(false);
-  const [fromValue, setFromValue] = useState<string | null>(null);
-  const [toOpen, setToOpen] = useState(false);
-  const [toValue, setToValue] = useState<string | null>(null);
-  const [classOpen, setClassOpen] = useState(false);
-  const [classValue, setClassValue] = useState<string | null>(null);
+  const [fromOpen, setFromOpen] = useState(null);
+  const [toOpen, setToOpen] = useState(null);
+  const [classOpen, setClassOpen] = useState(null);
 
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -94,32 +91,28 @@ const FlightBookingScreen = ({navigation}: any) => {
               onSelect={setSelectedOption}
             />
 
-            {/* Dropdowns */}
-            <DropdownSection
+            <CustomDropdown
               label="From"
-              open={fromOpen}
-              value={fromValue}
-              items={fromItems}
-              setOpen={setFromOpen}
-              setValue={setFromValue}
-            />
-
-            <DropdownSection
-              label="To"
-              open={toOpen}
-              value={toValue}
+              placeHolder="Select an Option"
               items={toItems}
-              setOpen={setToOpen}
-              setValue={setToValue}
+              selectedValue={fromOpen}
+              onSelect={setFromOpen}
             />
 
-            <DropdownSection
+            <CustomDropdown
+              label="To"
+              placeHolder="Select an Option"
+              items={fromItems}
+              selectedValue={toOpen}
+              onSelect={setToOpen}
+            />
+
+            <CustomDropdown
               label="Class & Travellers"
-              open={classOpen}
-              value={classValue}
+              placeHolder="Select an Option"
               items={classItems}
-              setOpen={setClassOpen}
-              setValue={setClassValue}
+              selectedValue={classOpen}
+              onSelect={setClassOpen}
             />
 
             {/* Date Picker */}
@@ -158,35 +151,6 @@ const FlightBookingScreen = ({navigation}: any) => {
     </>
   );
 };
-
-const DropdownSection = ({
-  label,
-  open,
-  value,
-  items,
-  setOpen,
-  setValue,
-}: {
-  label: string;
-  open: boolean;
-  value: string | null;
-  items: {label: string; value: string}[];
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setValue: React.Dispatch<React.SetStateAction<string | null>>;
-}) => (
-  <View style={{zIndex: open ? 1000 : 1}}>
-    <Dropdown
-      label={label}
-      open={open}
-      value={value}
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-      setItems={() => {}}
-      placeholder={label}
-    />
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {

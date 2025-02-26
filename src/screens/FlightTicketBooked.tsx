@@ -17,7 +17,7 @@ const bookingData = {
   status: 'Confirmed',
 };
 
-const FlightTicketBooked = ({navigation}) => {
+const FlightTicketBooked = ({navigation}:any) => {
   return (
     <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, backgroundColor: '#141414'}}>
       <BookingDetails booking={bookingData} />

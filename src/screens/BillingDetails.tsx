@@ -8,10 +8,9 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../components/Header';
 import Collapsible from 'react-native-collapsible';
-import Dropdown from '../components/Dropdown';
+import CustomDropdown from '../components/CustomDropdown';
 
 const cityNames = [
   {label: 'BLR - Bengaluru', value: 'BLR'},
@@ -20,44 +19,11 @@ const cityNames = [
   {label: 'MAA - Chennai', value: 'MAA'},
 ];
 
-const DropdownSection = ({
-  label,
-  open,
-  value,
-  items,
-  setOpen,
-  setValue,
-}: {
-  label: string;
-  open: boolean;
-  value: string | null;
-  items: {label: string; value: string}[];
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setValue: React.Dispatch<React.SetStateAction<string | null>>;
-}) => (
-  <View style={{zIndex: open ? 1000 : 1}}>
-    <Dropdown
-      label={label}
-      open={open}
-      value={value}
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-      setItems={() => {}}
-      placeholder={label}
-    />
-  </View>
-);
-
-
-const BillingDetails = ({navigation}) => {
+const BillingDetails = ({navigation}:any) => {
   const [gstEnabled, setGstEnabled] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [city, setCity] = useState(false);
-  const [cityValue, setCityValue] = useState<string | null>(null);
-
-  const [state, setState] = useState(false);
-  const [stateValue, setStateValue] = useState<string | null>(null);
+  const [city, setCity] = useState(null);
+  const [state, setState] = useState(null);
 
   // Use `useCallback` to prevent unnecessary re-renders
   const toggleCollapse = useCallback(() => {
@@ -137,26 +103,21 @@ const BillingDetails = ({navigation}) => {
               placeholderTextColor="#888"
             />
           </View>
+          <CustomDropdown
+              label="City"
+              placeHolder="Select your City"
+              items={cityNames}
+              selectedValue={city}
+              onSelect={setCity}
+            />
 
-          {/* Dropdowns */}
-          <DropdownSection
-            label="City"
-            open={city}
-            value={cityValue}
-            items={cityNames}
-            setOpen={setCity}
-            setValue={setCityValue}
-          />
-
-          {/* Dropdowns */}
-          <DropdownSection
-            label="State"
-            open={state}
-            value={stateValue}
-            items={cityNames}
-            setOpen={setState}
-            setValue={setStateValue}
-          />
+          <CustomDropdown
+              label="State"
+              placeHolder="Select your State"
+              items={cityNames}
+              selectedValue={state}
+              onSelect={setState}
+            />
         </View>
       </ScrollView>
       {/* Fare Summary */}
