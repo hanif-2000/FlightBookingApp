@@ -1,28 +1,38 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 
 interface FlightDetailsProps {
-  title: string;
   route: string;
   date: string;
   day: string;
   icon: any;
   layoff: any;
   down: any;
+  airlineName: string;
+  flightCode: string;
+  classType?: string;
+  price?: string;
+  duration?: string;
 }
 
-const FlightDetails = ({
-  title,
+const FlightDetailsCard = ({
   route,
   date,
   day,
   icon,
   layoff,
   down,
+  airlineName,
+  flightCode,
+  classType,
+  price,
+  duration,
 }: FlightDetailsProps) => {
-  const renderDateItem = (text: string) => (
+  const renderDateItem = (text: string, icon: true) => (
     <View style={styles.dateItem}>
-      <Image source={down} tintColor="#141414" style={styles.iconMargin} />
+      {icon && (
+        <Image source={down} tintColor="#141414" style={styles.iconMargin} />
+      )}
       <Text style={styles.dateText}>{text}</Text>
     </View>
   );
@@ -31,7 +41,10 @@ const FlightDetails = ({
     <View style={styles.container}>
       <View style={styles.headerSection}>
         <View style={styles.header}>
-          <Text style={styles.title}>{title}</Text>
+          <View style={{marginBottom: 10}}>
+            <Text style={styles.title}>{airlineName}</Text>
+            <Text style={[styles.flightCode]}>{flightCode}</Text>
+          </View>
           <Image source={layoff} style={styles.layoffIcon} />
         </View>
         <View style={styles.flightRoute}>
@@ -43,8 +56,11 @@ const FlightDetails = ({
       <View style={styles.separator} />
 
       <View style={styles.dateSection}>
-        {renderDateItem(date)}
-        {renderDateItem(day)}
+        <ScrollView keyboardShouldPersistTaps="handled" horizontal showsHorizontalScrollIndicator={false}>
+          {renderDateItem(classType, (icon = true))}
+          {renderDateItem(price, (icon = false))}
+          {renderDateItem(duration, (icon = false))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -69,12 +85,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#000',
     fontWeight: 'bold',
-    marginBottom: 10,
+  },
+  flightCode: {
+    fontSize: 12,
+    color: '#000',
+    fontWeight: '400',
   },
   layoffIcon: {
     position: 'absolute',
-    right: -20,
-    top: -20,
+    right: 5,
+    top: -5,
+    height: 35,
+    borderRadius: 10,
   },
   flightRoute: {
     flexDirection: 'row',
@@ -119,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FlightDetails;
+export default FlightDetailsCard;

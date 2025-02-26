@@ -1,9 +1,10 @@
-import React, {memo, useState} from 'react';
+import React, {memo} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import RoundCheckbox from './RoundCheckbox';
 
 interface FlightCardProps {
   airline: string;
-  classType: string; // Renamed from `class` to avoid keyword conflict
+  classType: string;
   date: string;
   duration: string;
   time1: string;
@@ -17,6 +18,16 @@ interface FlightCardProps {
   airlineImg: any;
   isSelected: boolean;
   onSelect: () => void;
+  changeFlight: string;
+  changeFlightStatus: boolean;
+  airlineChangeFlight: string;
+  classTypeChangeFlight: string;
+  dateChangeFlight: string;
+  durationChangeFlight: string;
+  time1ChangeFlight: string;
+  time2ChangeFlight: string;
+  location1ChangeFlight: string;
+  location2ChangeFlight: string;
 }
 
 const FlightTime: React.FC<{time1: string; time2: string}> = ({
@@ -43,15 +54,27 @@ const FlightLocation: React.FC<{location1: string; location2: string}> = ({
   </View>
 );
 
-const PriceDetails: React.FC<{price: string; detailsButton: string}> = ({
-  price,
-  detailsButton,
+const AirPortName: React.FC<{location1: string; location2: string}> = ({
+  location1,
+  location2,
 }) => (
-  <View style={styles.priceDetails}>
-    <Text style={styles.priceText}>{price}</Text>
-    <TouchableOpacity style={styles.detailsButton}>
-      <Text style={styles.detailsButtonText}>{detailsButton}</Text>
-    </TouchableOpacity>
+  <View style={[styles.flightLocation]}>
+    <Text style={[styles.airportNameView]}>{location1}</Text>
+    <Text style={[styles.airportNameView, {textAlign: 'right'}]}>
+      {location2}
+    </Text>
+  </View>
+);
+
+const TerminalName: React.FC<{location1: string; location2: string}> = ({
+  location1,
+  location2,
+}) => (
+  <View style={styles.flightLocation}>
+    <Text style={styles.airportNameView}>{location1}</Text>
+    <Text style={[styles.airportNameView, {textAlign: 'right'}]}>
+      {location2}
+    </Text>
   </View>
 );
 
@@ -64,60 +87,150 @@ const FlightCard: React.FC<FlightCardProps> = ({
   time2,
   location1,
   location2,
-  baggage1,
-  baggage2,
+  baggage1 = 'Cabin: 7kg',
+  baggage2 = 'Check-in: 15kg',
   price,
   detailsButton,
   airlineImg,
   isSelected,
   onSelect,
+  changeFlight,
+  changeFlightStatus,
+  airlineChangeFlight,
+  classTypeChangeFlight,
+  dateChangeFlight,
+  durationChangeFlight,
+  time1ChangeFlight,
+  time2ChangeFlight,
+  location1ChangeFlight,
+  location2ChangeFlight,
 }) => {
   return (
-    <View style={[styles.flightCard]}>
-      {/* Airline Details */}
-      <View style={styles.airlineDetails}>
-        <Image source={airlineImg} style={styles.airlineImage} />
-        <View>
-          <Text style={styles.airlineClass}>{airline}</Text>
-          <Text style={styles.economyClass}>{classType}</Text>
+    <>
+      <View style={[styles.flightCard]}>
+        {/* Flight Time */}
+        <View style={styles.flightTime}>
+          <Text style={styles.timeText}>{date}</Text>
+          <Text style={styles.durationText}>{duration}</Text>
+          <Text style={styles.timeText}>{date}</Text>
         </View>
-        <TouchableOpacity style={styles.checkboxContainer} onPress={onSelect}>
-          <View style={[styles.checkbox, isSelected && styles.checked]}>
-            {isSelected && <View style={styles.checkmark} />}
+
+        <FlightTime time1={time1} time2={time2} />
+        <FlightLocation location1={location1} location2={location2} />
+        <AirPortName
+          location1={'AirPort Name AirPortName AirPortName'}
+          location2={' AirPort Name AirPortName AirPortName'}
+        />
+        <TerminalName location1={'Terminal 1'} location2={'Terminal 2'} />
+
+        <View style={styles.separator} />
+
+        {/* Baggage Details */}
+        <View style={[styles.baggageDetails, {marginBottom: 10}]}>
+          <View
+            style={{
+              padding: 10,
+              borderColor: '#FFFFFF1F',
+              borderWidth: 1,
+              borderRadius: 12,
+              width: '45%',
+              alignItems: 'center',
+              backgroundColor: '#FFFFFF0D',
+            }}>
+            <Text style={styles.baggageText}>{baggage1}</Text>
           </View>
-        </TouchableOpacity>
-      </View>
 
-      <View style={styles.separator} />
-
-      {/* Flight Time */}
-      <View style={styles.flightTime}>
-        <Text style={styles.timeText}>{date}</Text>
-        <Text style={styles.durationText}>{duration}</Text>
-        <Text style={styles.timeText}>{date}</Text>
-      </View>
-
-      <FlightTime time1={time1} time2={time2} />
-      <FlightLocation location1={location1} location2={location2} />
-
-      {/* Baggage Details */}
-      {baggage1 && baggage2 && (
-        <View style={styles.baggageDetails}>
-          <Text style={styles.baggageText}>{baggage1}</Text>
-          <Text style={styles.baggageText}>{baggage2}</Text>
+          <View
+            style={{
+              padding: 10,
+              borderColor: '#FFFFFF1F',
+              borderWidth: 1,
+              borderRadius: 12,
+              width: '45%',
+              alignItems: 'center',
+              backgroundColor: '#FFFFFF0D',
+            }}>
+            <Text style={styles.baggageText}>{baggage2}</Text>
+          </View>
         </View>
-      )}
+      </View>
+      <View>
+        {changeFlightStatus && (
+          <>
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  width: '80%',
+                  paddingVertical: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: '#FFFFFF0D',
+                  alignSelf: 'center',
+                  borderRadius: 12,
+                  marginVertical: 10,
+                  backgroundColor: '#FFFFFF0D',
+                }}>
+                <Text style={{color: '#FFFFFFCC'}}>{changeFlight}</Text>
+              </View>
+            </View>
+            <View style={styles.flightCard}>
+              {/* Flight Time */}
+              <View style={styles.flightTime}>
+                <Text style={styles.timeText}>{dateChangeFlight}</Text>
+                <Text style={styles.durationText}>{durationChangeFlight}</Text>
+                <Text style={styles.timeText}>{dateChangeFlight}</Text>
+              </View>
 
-      {/* Price & Details Button */}
-      <PriceDetails price={price} detailsButton={detailsButton} />
-    </View>
+              <FlightTime time1={time1ChangeFlight} time2={time2ChangeFlight} />
+              <FlightLocation location1={location1} location2={location2} />
+              <AirPortName
+                location1={'AirPort Name AirPortName AirPortName'}
+                location2={' AirPort Name AirPortName AirPortName'}
+              />
+              <TerminalName location1={'Terminal 1'} location2={'Terminal 2'} />
+
+              {/* Baggage Details */}
+              <View style={styles.baggageDetails}>
+                <View
+                  style={{
+                    padding: 10,
+                    borderColor: '#FFFFFF1F',
+                    borderWidth: 1,
+                    borderRadius: 12,
+                    width: '45%',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF0D',
+                  }}>
+                  <Text style={styles.baggageText}>{baggage1}</Text>
+                </View>
+
+                <View
+                  style={{
+                    padding: 10,
+                    borderColor: '#FFFFFF1F',
+                    borderWidth: 1,
+                    borderRadius: 12,
+                    width: '45%',
+                    alignItems: 'center',
+                    backgroundColor: '#FFFFFF0D',
+                  }}>
+                  <Text style={styles.baggageText}>{baggage2}</Text>
+                </View>
+              </View>
+            </View>
+          </>
+        )}
+      </View>
+    </>
   );
-};
-
-// Default Props
-FlightCard.defaultProps = {
-  baggage1: 'Cabin: 7kg',
-  baggage2: 'Check-in: 15kg',
 };
 
 export default memo(FlightCard);
@@ -126,15 +239,14 @@ const styles = StyleSheet.create({
   flightCard: {
     backgroundColor: '#141414',
     borderRadius: 15,
-    // padding: 15,
-    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: '#FFFFFF1F',
+    paddingTop: 10,
   },
   selectedCard: {
     borderColor: '#10E0F9',
@@ -190,6 +302,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 10,
   },
+  airportNameView: {
+    fontSize: 10,
+    fontWeight: '400',
+    color: '#FFFFFFCC',
+    width: '30%',
+  },
   locationText: {
     fontSize: 16,
     color: '#FFFFFF',
@@ -198,60 +316,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
   baggageText: {
     fontSize: 14,
-    color: '#777',
-  },
-  priceDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 15,
-    backgroundColor: '#272727',
-    padding: 10,
-    borderRadius: 10,
-  },
-  priceText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  detailsButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    backgroundColor: 'transparent',
-  },
-  detailsButtonText: {
-    color: '#10E0F9',
-    fontWeight: '700',
-    fontSize: 12,
-  },
-
-  checkboxContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 5,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#FFFFFF1F',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  checked: {
-    backgroundColor: '#3e4e59',
-    borderColor: '#3e4e59',
-  },
-  checkmark: {
-    width: 12,
-    height: 12,
-    backgroundColor: '#fff',
-    borderRadius: 2,
+    color: '#FFFFFFCC',
   },
 });

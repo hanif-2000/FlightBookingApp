@@ -1,37 +1,58 @@
+import React, {FC, memo} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import StepProgress from './StepProgress';
 
-const Header = ({label, user, chat, back, left, step}: any) => {
+interface HeaderProps {
+  label?: string;
+  user?: boolean;
+  chat?: boolean;
+  back?: boolean;
+  step?: number;
+}
+
+const Header: FC<HeaderProps> = ({label, user, chat, back, step}) => {
   const navigation = useNavigation();
+
+  const handlePress = () => {
+    if (back) {
+      navigation.goBack();
+    } else {
+      console.log('Back button not enabled');
+    }
+  };
+
+  const handlePressRight = () => {
+    console.log('right button not enabled');
+  };
+
   return (
-    <View
-      style={[
-        styles.container,
-        !left && {justifyContent: 'space-between', marginRight: 0},
-      ]}>
-      {back && (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+    <View style={styles.container}>
+      <View style={styles.leftSection}>
+        {(back || user) && (
+          <TouchableOpacity onPress={handlePress}>
+            <Image
+              source={
+                back
+                  ? require('../../assets/back.png')
+                  : require('../../assets/user.png')
+              }
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        )}
+        {label && <Text style={styles.label}>{label}</Text>}
+      </View>
+
+      {step && <StepProgress step={step} />}
+
+      {chat && (
+        <TouchableOpacity onPress={handlePressRight}>
           <Image
-            source={require('../../assets/back.png')}
-            style={styles.avatar}
+            source={require('../../assets/chat.png')}
+            style={styles.chatIcon}
           />
         </TouchableOpacity>
-      )}
-      {step && <StepProgress step={step} />}
-      {user && (
-        <Image
-          source={require('../../assets/user.png')}
-          style={styles.avatar}
-        />
-      )}
-      <Text style={styles.location}>{label}</Text>
-      {chat && (
-        <Image
-          source={require('../../assets/chat.png')}
-          style={styles.chatIcon}
-        />
       )}
     </View>
   );
@@ -40,17 +61,23 @@ const Header = ({label, user, chat, back, left, step}: any) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    height: 60,
     alignItems: 'center',
-    // paddingHorizontal: 20,
-    paddingVertical: 15,
+    backgroundColor: '#000',
+    paddingHorizontal: 10,
+    justifyContent: 'space-between',
   },
-  avatar: {
+  leftSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
     width: 30,
     height: 30,
     borderRadius: 15,
     marginRight: 10,
   },
-  location: {
+  label: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '500',
@@ -61,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default memo(Header);

@@ -1,18 +1,23 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface CustomCheckboxProps {
   checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
   toggleCheckbox: () => void;
 }
 
-const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, toggleCheckbox }) => {
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
+  checked,
+  toggleCheckbox,
+}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.checkboxContainer} onPress={toggleCheckbox}>
+      <TouchableOpacity
+        style={styles.checkboxContainer}
+        onPress={toggleCheckbox}>
         <View style={[styles.checkbox, checked && styles.checked]}>
-          {checked && <View style={styles.checkmark} />}
+          {checked && <Icon name="done" size={20} color={'#fff'} />}
         </View>
         <Text style={styles.checkboxLabel}>Need Return Booking?</Text>
       </TouchableOpacity>
@@ -25,8 +30,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
   checkbox: {
@@ -34,24 +39,23 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: "#FFFFFF1F",
-    justifyContent: "center",
-    alignItems: "center",
+    borderColor: '#FFFFFF1F',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 10,
   },
   checked: {
-    backgroundColor: "#3e4e59",
-    borderColor: "#3e4e59",
+    backgroundColor: '#10E0F9',
   },
   checkmark: {
     width: 12,
     height: 12,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 2,
   },
   checkboxLabel: {
     fontSize: 16,
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
 });
 

@@ -1,16 +1,9 @@
 import React, {useState, useCallback} from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  View,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {StyleSheet, FlatList, View, TouchableOpacity, Text} from 'react-native';
 import FlightDetails from '../components/FlightDetails';
-import FlightCard from '../components/FlightCard';
 import FilterButtons from '../components/FilterButtons';
 import Header from '../components/Header';
+import FlightCardSelectable from '../components/FlightCardSelectable';
 
 // Flight data (extracted outside component for better structure)
 const flights = [
@@ -42,10 +35,37 @@ const flights = [
     price: '₹2,170 per adult',
     airlineImg: require('../../assets/airarabiya.png'),
   },
+  {
+    id: '3',
+    airline: 'Air Arabiya',
+    classType: 'Economy Class',
+    date: 'Mon, 20 May',
+    duration: '2H 55M',
+    time1: '07:55',
+    time2: '10:20',
+    location1: 'New Delhi',
+    location2: 'Goa (North)',
+    price: '₹2,170 per adult',
+    airlineImg: require('../../assets/airarabiya.png'),
+    changeFlight: 'Change flight | 8h layover',
+    changeFlightStatus: true,
+    airlineChangeFlight: 'Air Arabiya',
+    classTypeChangeFlight: 'Economy Class',
+    dateChangeFlight: 'Mon, 21 May',
+    durationChangeFlight: '2H 55M',
+    time1ChangeFlight: '07:55',
+    time2ChangeFlight: '10:20',
+    location1ChangeFlight: 'Goa (North)',
+    location2ChangeFlight: 'Mumbai',
+  },
 ];
 
-const BookingScreen = ({navigation}:any) => {
+const BookingScreen = ({navigation}: any) => {
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
+
+  const selectedFlightDetails = flights.find(
+    flight => flight.id === selectedFlight,
+  );
 
   // Handle flight selection
   const handleSelectFlight = useCallback((id: string) => {
@@ -54,11 +74,12 @@ const BookingScreen = ({navigation}:any) => {
 
   // Render Flight Item
   const renderFlightItem = ({item}: {item: (typeof flights)[0]}) => (
-    <FlightCard
+    <FlightCardSelectable
       {...item}
       detailsButton="FLIGHT DETAILS"
       isSelected={item.id === selectedFlight}
       onSelect={() => handleSelectFlight(item.id)}
+      onFlightDetails={() => navigation.navigate('FlightDetails')}
     />
   );
 
@@ -79,34 +100,42 @@ const BookingScreen = ({navigation}:any) => {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Header back label="Change Flight" left />
+    <>
+      <Header back label="Change Flight" />
+      <View style={styles.mainContainer}>
+        <FlatList
+          data={flights}
+          keyExtractor={item => item.id}
+          renderItem={renderFlightItem}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={renderListHeader}
+        />
 
-      <FlatList
-        data={flights}
-        keyExtractor={item => item.id}
-        renderItem={renderFlightItem}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={renderListHeader}
-      />
-
-      {/* Fixed Footer Buttons */}
-      <View style={styles.footerButtons}>
-        <TouchableOpacity style={styles.applyButton}>
-          <Text style={styles.applyButtonText}>Apply</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.bookButton} onPress={()=>navigation.navigate('FlightDetails')}>
-          <Text style={styles.bookButtonText}>BOOK NOW</Text>
-        </TouchableOpacity>
+        {/* Fixed Footer Buttons */}
+        <View style={styles.footerButtons}>
+          <View style={styles.applyButton}>
+            <Text style={styles.applyButtonText}>
+              {selectedFlightDetails
+                ? selectedFlightDetails.price
+                : 'Flight Price'}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.bookButton}
+            onPress={() => navigation.navigate('ReviewFlight')}
+          >
+            <Text style={styles.bookButtonText}>BOOK NOW</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 
 // Styles
 const styles = StyleSheet.create({
-  safeArea: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#000',
   },

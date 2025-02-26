@@ -1,8 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
+import React, {useState} from 'react';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+} from 'react-native';
+import FilterActionSheet from './FilterActionSheet';
+import SortActionSheet from './SortActionSheet';
 
-// Sorting options
 const SORT_OPTIONS = [
   'Default',
   'Price: Low to High',
@@ -12,24 +18,70 @@ const SORT_OPTIONS = [
   'Duration: Low to High',
 ];
 
-// Filter labels
+const FILTER_OPTIONS = [
+  {
+    airlineName: 'Emirates',
+    airlineLogo: '',
+  },
+  {
+    airlineName: 'Vistara Airlines',
+    airlineLogo: '',
+  },
+  {
+    airlineName: 'Lufthansa',
+    airlineLogo: '',
+  },
+  {
+    airlineName: 'Indigo',
+    airlineLogo: '',
+  },
+  {
+    airlineName: 'Tree House',
+    airlineLogo: '',
+  },
+  {
+    airlineName: 'Air India',
+    airlineLogo: '',
+  },
+  {
+    airlineName: 'Qatar Airways',
+    airlineLogo: '',
+  },
+];
+
+const CLASSTYPES = [
+  'Economy',
+  'Premium Economy',
+  'First Class',
+  'Business Class',
+  'Private Flight',
+];
+
 const FILTER_LABELS = ['Cheapest', 'Fastest', 'Non-stop'];
 
-// Reusable Selectable Button Component
-const SelectableButton = ({ label, isSelected, onPress }) => (
+const SelectableButton = ({label, isSelected, onPress}) => (
   <TouchableOpacity
-    style={[styles.selectableButton, isSelected ? styles.selectedButton : styles.unselectedButton]}
+    style={[
+      styles.selectableButton,
+      isSelected ? styles.selectedButton : styles.unselectedButton,
+    ]}
     onPress={onPress}
-    activeOpacity={0.8}
-  >
-    <Text style={[styles.selectableButtonText, isSelected && styles.selectedButtonText]}>{label}</Text>
+    activeOpacity={0.8}>
+    <Text
+      style={[
+        styles.selectableButtonText,
+        isSelected && styles.selectedButtonText,
+      ]}>
+      {label}
+    </Text>
   </TouchableOpacity>
 );
 
 const FilterButtons = () => {
-  const actionSheetRef = useRef<ActionSheetRef>(null);
   const [selectedSortOptions, setSelectedSortOptions] = useState(new Set());
   const [selectedFilters, setSelectedFilters] = useState(new Set());
+  const [selectedFiltersOptions, setSelectedFiltersOptions] = useState(new Set());
+  const [selectedClass, setSelectedClass] = useState(new Set());
 
   const toggleSelection = (setSelection, option) => {
     setSelection(prevSet => {
@@ -41,8 +93,11 @@ const FilterButtons = () => {
 
   return (
     <View style={styles.container}>
-      {/* Filter Buttons */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+      keyboardShouldPersistTaps="handled"
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContainer}>
         {FILTER_LABELS.map(label => (
           <SelectableButton
             key={label}
@@ -53,46 +108,23 @@ const FilterButtons = () => {
         ))}
       </ScrollView>
 
-      {/* Sort & Filter Action Buttons */}
       <View style={styles.actionContainer}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => actionSheetRef.current?.show()}>
-          <Text style={styles.actionButtonText}>Filters</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} onPress={() => actionSheetRef.current?.show()}>
-          <Text style={styles.actionButtonText}>Sort</Text>
-        </TouchableOpacity>
+        <SortActionSheet
+          title="Sort"
+          options={SORT_OPTIONS}
+          selectedOptions={selectedSortOptions}
+          onSelect={option => toggleSelection(setSelectedSortOptions, option)}
+        />
+        <FilterActionSheet
+          title="Filters"
+          options={FILTER_OPTIONS}
+          classType={CLASSTYPES}
+          selectedOptions={selectedFiltersOptions}
+          onSelect={option => toggleSelection(setSelectedFiltersOptions, option)}
+          selectedClass={selectedClass}
+          onSelectClass={option => toggleSelection(setSelectedClass, option)}
+        />
       </View>
-
-      {/* Bottom Action Sheet */}
-      <ActionSheet ref={actionSheetRef} gestureEnabled>
-        <View style={styles.sheetContent}>
-          <Text style={styles.sheetTitle}>Sort & Filters</Text>
-          <View style={styles.separator} />
-
-          {/* Sort Options */}
-          <Text style={styles.sectionTitle}>Sort By</Text>
-          <ScrollView contentContainerStyle={styles.selectableList}>
-            {SORT_OPTIONS.map(option => (
-              <SelectableButton
-                key={option}
-                label={option}
-                isSelected={selectedSortOptions.has(option)}
-                onPress={() => toggleSelection(setSelectedSortOptions, option)}
-              />
-            ))}
-          </ScrollView>
-
-          {/* Apply & Close Buttons */}
-          <View style={styles.footerButtons}>
-            <TouchableOpacity style={styles.applyButton} onPress={() => actionSheetRef.current?.hide()}>
-              <Text style={styles.applyButtonText}>Apply</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={() => actionSheetRef.current?.hide()}>
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ActionSheet>
     </View>
   );
 };
@@ -133,73 +165,6 @@ const styles = StyleSheet.create({
   },
   selectedButtonText: {
     color: '#000',
-  },
-  actionButton: {
-    backgroundColor: '#444',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    marginLeft: 10,
-  },
-  actionButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  sheetContent: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  sheetTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'left',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginVertical: 10,
-    alignSelf: 'flex-start',
-  },
-  separator: {
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    width: '100%',
-    marginBottom: 10,
-  },
-  selectableList: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  footerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginTop: 20,
-  },
-  applyButton: {
-    flex: 1,
-    marginRight: 5,
-    padding: 10,
-    backgroundColor: '#28a745',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  applyButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  closeButton: {
-    flex: 1,
-    marginLeft: 5,
-    padding: 10,
-    backgroundColor: '#dc3545',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
   },
 });
 

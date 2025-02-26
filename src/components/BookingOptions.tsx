@@ -18,8 +18,8 @@ const BookingOptions = ({
 }) => {
   return (
     <View style={styles.container}>
-      {options.map(item => (
-        <>
+      {options.map((item, index) => (
+        <View key={item.id || index}>
           {selected === item.id ? (
             <LinearGradient
               colors={['#1CAEDC', '#10E0F9']}
@@ -65,7 +65,7 @@ const BookingOptions = ({
               </Text>
             </TouchableOpacity>
           )}
-        </>
+        </View>
       ))}
     </View>
   );

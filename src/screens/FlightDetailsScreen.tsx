@@ -3,156 +3,147 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Header from '../components/Header';
+import FlightDetailsCard from '../components/FlightDetailsCard';
+import FlightCard from '../components/FlightCard';
+import {FlatList} from 'react-native-gesture-handler';
+import PolicySection from '../components/PolicySection';
+
+const flights = [
+  {
+    id: '3',
+    airline: 'Air Arabiya',
+    classType: 'Economy Class',
+    date: 'Mon, 20 May',
+    duration: '2H 55M',
+    time1: '07:55',
+    time2: '10:20',
+    location1: 'New Delhi',
+    location2: 'Goa (North)',
+    price: '₹2,170 per adult',
+    airlineImg: require('../../assets/airarabiya.png'),
+    changeFlight: 'Change flight | 8h layover',
+    changeFlightStatus: true,
+    airlineChangeFlight: 'Air Arabiya',
+    classTypeChangeFlight: 'Economy Class',
+    dateChangeFlight: 'Mon, 21 May',
+    durationChangeFlight: '2H 55M',
+    time1ChangeFlight: '07:55',
+    time2ChangeFlight: '10:20',
+    location1ChangeFlight: 'Goa (North)',
+    location2ChangeFlight: 'Mumbai',
+  },
+];
 
 const FlightDetailsScreen = () => {
+  const renderFlightItem = ({item}: any) => (
+    <FlightCard {...item} detailsButton="FLIGHT DETAILS" />
+  );
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity>
-          <Image
-            source={require('../../assets/back.png')}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Flight Details</Text>
-        <TouchableOpacity>
-          {/* <Image source={require("../../assets/menu.png")} style={styles.icon} /> */}
-        </TouchableOpacity>
-      </View>
-
-      {/* Flight Information */}
-      <View style={styles.flightCard}>
-        <View style={styles.airlineRow}>
-          <Image
-            source={require('../../assets/indigo.png')}
-            style={styles.airlineLogo}
-          />
-          <View>
-            <Text style={styles.airlineName}>Indigo</Text>
-            <Text style={styles.flightCode}>QP - 1355</Text>
-          </View>
-        </View>
-        <Text style={styles.route}>New Delhi to Bengaluru</Text>
-        <Text style={styles.class}>Economy</Text>
-        <Text style={styles.price}>₹2,170</Text>
-      </View>
-
-      {/* Flight Timings */}
-      <View style={styles.flightInfoCard}>
-        <Text style={styles.date}>Mon, 20 May</Text>
-        <Text style={styles.duration}>2H 55M</Text>
-        <Text style={styles.date}>Mon, 20 May</Text>
-      </View>
-
-      <View style={styles.flightInfoCard}>
-        <Text style={styles.time}>07:55</Text>
-        <Image
-          source={require('../../assets/ongoing.png')}
-          style={styles.icon}
+    <>
+      <Header back label="Flight Details" />
+      <ScrollView  keyboardShouldPersistTaps="handled" style={styles.container}>
+        {/* Flight Information */}
+        <FlightDetailsCard
+          airlineName="Indigo"
+          flightCode="QP - 1355"
+          route="New Delhi To Goa North"
+          date="3rd October"
+          day="Thursday"
+          classType="economy"
+          price="+ 2,150"
+          icon={require('../../assets/location.png')}
+          layoff={require('../../assets/indigo.png')}
+          down={require('../../assets/trend-down.png')}
         />
-        <Text style={styles.time}>10:20</Text>
-      </View>
 
-      <View style={styles.locationRow}>
-        <Text style={styles.location}>DEL - New Delhi</Text>
-        <Text style={styles.location}>BOM - Mumbai</Text>
-      </View>
+        <FlatList
+          data={flights}
+          keyExtractor={item => item.id}
+          renderItem={renderFlightItem}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+          // ListHeaderComponent={renderListHeader}
+        />
+        <Text
+          style={{
+            color: '#FFFFFF99',
+            fontSize: 12,
+            fontWeight: '400',
+            width: '90%',
+            marginVertical: 10,
+          }}>
+          <Text style={{color: '#FFFFFF'}}>Note:</Text> Your flight shall be
+          landing in Mopa Airport.Please note that Mopa Airport is 20 Km from
+          North Goa and 60 Km from South Goa.
+        </Text>
+        <PolicySection
+          title="FARE BREAKUP"
+          data={[
+            {label: 'Base Fare', value: '₹4,340'},
+            {label: 'Surcharges', value: '₹360'},
+            {label: 'Total Fare', value: '₹4,700'},
+            {label: 'Change in Itinerary', value: '+ ₹2,340'},
+          ]}
+        />
 
-      <View style={styles.baggageRow}>
-        <Text style={styles.baggage}>1 Cabin bag - 7kg</Text>
-        <Text style={styles.baggage}>2 Check-in Bags 23kg</Text>
-      </View>
+        <PolicySection
+          title="CANCELLATION"
+          titleColor="#E81E54"
+          data={[
+            {label: 'Before 29th Sep', value: '₹2,999'},
+            {label: '4 hours to 4 days', value: '₹3,999'},
+            {label: '0 hours to 4 hours', value: 'Non-Refundable'},
+          ]}
+        />
 
-      {/* Change Flight | Layover */}
-      <View style={styles.layoverCard}>
-        <Text style={styles.layoverText}>Change Flight | 8h Layover</Text>
-      </View>
+        <PolicySection
+          title="RESCHEDULE"
+          titleColor="#FFD400"
+          data={[
+            {label: 'Before 29th Sep', value: '₹2,250 + Fare difference'},
+            {label: '4 hours to 4 days', value: '₹2,999 + Fare difference'},
+            {label: '0 hours to 4 hours', value: 'Non-Changeable'},
+          ]}
+        />
 
-      {/* Book Now Button */}
-      <TouchableOpacity style={styles.bookNowButton}>
-        <Text style={styles.bookNowText}>BOOK NOW</Text>
-      </TouchableOpacity>
-
-      {/* Fare Breakup */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>FARE BREAKUP</Text>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>Base Fare</Text>
-          <Text style={styles.fareAmount}>₹4,340</Text>
+        {/* Terms & Conditions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>TERMS & CONDITIONS</Text>
+          {[
+            'Cancellation charges are applicable per passenger per sector.',
+            'Discount and Assured fee, if any, will be adjusted in the final refund amount.',
+            'Partial cancellation cannot be made for tickets booked under special or discounted fares.',
+            'In case of a no-show or for tickets cancelled post a specific time, only statutory taxes are refundable.',
+            'Penalty charged by the airline is indicative only and may change without any prior notice.',
+            'Cancellation request will be processed only within the mentioned time period.',
+            'If the flight fare is less than default cancellation penalty then taxes will be refundable.',
+            'Reschedule request will be processed only within the mentioned time period.',
+            'The difference in fares between the old and the new booking will also be payable by the user.',
+          ].map((item, index) => (
+            <Text key={index} style={styles.termsText}>
+              {index + 1}. {item}
+            </Text>
+          ))}
         </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>Surcharges</Text>
-          <Text style={styles.fareAmount}>₹360</Text>
+      </ScrollView>
+      {/* Fixed Footer Buttons */}
+      <View style={styles.footerButtons}>
+        <View style={styles.applyButton}>
+          <Text style={styles.applyButtonText}>+ 2,150 per adult</Text>
         </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.totalFareLabel}>Total Fare</Text>
-          <Text style={styles.totalFareAmount}>₹4,700</Text>
-        </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>Change in Itinerary</Text>
-          <Text style={styles.fareAmount}>+ ₹2,340</Text>
-        </View>
+        <TouchableOpacity
+          style={styles.bookButton}
+          // onPress={() => navigation.navigate('FlightDetails')}
+        >
+          <Text style={styles.bookButtonText}>BOOK NOW</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Cancellation Policy */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>CANCELLATION</Text>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>Before 29th Sep</Text>
-          <Text style={styles.fareAmount}>₹2,999</Text>
-        </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>4 hours to 4 days</Text>
-          <Text style={styles.fareAmount}>₹3,999</Text>
-        </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>0 hours to 4 hours</Text>
-          <Text style={styles.fareAmount}>Non-Refundable</Text>
-        </View>
-      </View>
-
-      {/* Reschedule Policy */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>RESCHEDULE</Text>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>Before 29th Sep</Text>
-          <Text style={styles.fareAmount}>₹2,250 + Fare difference</Text>
-        </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>4 hours to 4 days</Text>
-          <Text style={styles.fareAmount}>₹2,999 + Fare difference</Text>
-        </View>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareLabel}>0 hours to 4 hours</Text>
-          <Text style={styles.fareAmount}>Non-Changeable</Text>
-        </View>
-      </View>
-
-      {/* Terms & Conditions */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>TERMS & CONDITIONS</Text>
-        {[
-          'Cancellation charges are applicable per passenger per sector.',
-          'Discount and Assured fee, if any, will be adjusted in the final refund amount.',
-          'Partial cancellation cannot be made for tickets booked under special or discounted fares.',
-          'In case of a no-show or for tickets cancelled post a specific time, only statutory taxes are refundable.',
-          'Penalty charged by the airline is indicative only and may change without any prior notice.',
-          'Cancellation request will be processed only within the mentioned time period.',
-          'If the flight fare is less than default cancellation penalty then taxes will be refundable.',
-          'Reschedule request will be processed only within the mentioned time period.',
-          'The difference in fares between the old and the new booking will also be payable by the user.',
-        ].map((item, index) => (
-          <Text key={index} style={styles.termsText}>
-            {index + 1}. {item}
-          </Text>
-        ))}
-      </View>
-    </ScrollView>
+    </>
   );
 };
 
@@ -230,7 +221,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 5,
   },
-
+  listContainer: {
+    paddingBottom: 10, // Ensure scrolling space above the buttons
+    paddingTop: 20,
+  },
   // Flight Timings
   flightInfoCard: {
     flexDirection: 'row',
@@ -280,8 +274,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 15,
   },
-
-  // Layover
   layoverCard: {
     backgroundColor: '#10E0F9',
     padding: 12,
@@ -294,8 +286,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-
-  // Sections (Fare, Cancellation, Reschedule)
   section: {
     backgroundColor: '#1E1E1E',
     padding: 15,
@@ -303,34 +293,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
-    color: '#ffffff',
-    fontSize: 17,
-    fontWeight: 'bold',
+    color: '#FFFFFF99',
+    fontSize: 12,
+    fontWeight: '500',
     marginBottom: 8,
   },
-  fareRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 6,
-  },
-  fareLabel: {
-    color: '#a5a5a5',
-    fontSize: 15,
-  },
-  fareAmount: {
-    color: '#ffffff',
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
+
   totalFareLabel: {
     color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: '400',
   },
   totalFareAmount: {
-    color: '#10E0F9',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '400',
   },
 
   // Terms & Conditions
@@ -351,6 +328,42 @@ const styles = StyleSheet.create({
   bookNowText: {
     color: '#ffffff',
     fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  footerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 15,
+    backgroundColor: '#000',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  applyButton: {
+    flex: 1,
+    marginRight: 10,
+    paddingVertical: 12,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    alignItems: 'center',
+    borderColor: '#F0F0F0',
+    borderWidth: 1,
+  },
+  applyButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  bookButton: {
+    flex: 1,
+    marginLeft: 10,
+    paddingVertical: 12,
+    backgroundColor: '#10E0F9',
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  bookButtonText: {
+    color: '#fff',
     fontWeight: 'bold',
   },
 });

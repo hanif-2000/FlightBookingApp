@@ -1,5 +1,11 @@
 import React, {useState, useCallback} from 'react';
-import {View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import Header from '../components/Header';
 import BookingOptions from '../components/BookingOptions';
 import Dropdown from '../components/Dropdown';
@@ -7,7 +13,7 @@ import DatePickerComponent from '../components/DatePickerComponent';
 import CustomCheckbox from '../components/CustomCheckbox';
 import PrimaryButton from '../components/PrimaryButton';
 
-const FlightBookingScreen = ({navigation}:any) => {
+const FlightBookingScreen = ({navigation}: any) => {
   const [selectedOption, setSelectedOption] = useState('flight');
   const [checked, setChecked] = useState(false);
 
@@ -75,76 +81,81 @@ const FlightBookingScreen = ({navigation}:any) => {
   const showDatePickerReturn = () => setShowReturn(true); // Open the return date picker modal
 
   return (
-    <View style={styles.container}>
+    <>
       <Header label={'Gaya, India'} user chat />
-      <ScrollView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidingView}>
-        {/* Booking Options */}
-        <BookingOptions
-          selected={selectedOption}
-          onSelect={setSelectedOption}
-        />
+      <View style={styles.container}>
+        <ScrollView keyboardShouldPersistTaps="handled">
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.keyboardAvoidingView}>
+            {/* Booking Options */}
+            <BookingOptions
+              selected={selectedOption}
+              onSelect={setSelectedOption}
+            />
 
-        {/* Dropdowns */}
-        <DropdownSection
-          label="From"
-          open={fromOpen}
-          value={fromValue}
-          items={fromItems}
-          setOpen={setFromOpen}
-          setValue={setFromValue}
-        />
+            {/* Dropdowns */}
+            <DropdownSection
+              label="From"
+              open={fromOpen}
+              value={fromValue}
+              items={fromItems}
+              setOpen={setFromOpen}
+              setValue={setFromValue}
+            />
 
-        <DropdownSection
-          label="To"
-          open={toOpen}
-          value={toValue}
-          items={toItems}
-          setOpen={setToOpen}
-          setValue={setToValue}
-        />
+            <DropdownSection
+              label="To"
+              open={toOpen}
+              value={toValue}
+              items={toItems}
+              setOpen={setToOpen}
+              setValue={setToValue}
+            />
 
-        <DropdownSection
-          label="Class & Travellers"
-          open={classOpen}
-          value={classValue}
-          items={classItems}
-          setOpen={setClassOpen}
-          setValue={setClassValue}
-        />
+            <DropdownSection
+              label="Class & Travellers"
+              open={classOpen}
+              value={classValue}
+              items={classItems}
+              setOpen={setClassOpen}
+              setValue={setClassValue}
+            />
 
-        {/* Date Picker */}
-        <DatePickerComponent
-          date={date}
-          show={show}
-          onChange={(event, selectedDate) =>
-            onDateChange(event, selectedDate, setDate)
-          }
-          showDatePicker={showDatePicker}
-          label="Departure"
-        />
+            {/* Date Picker */}
+            <DatePickerComponent
+              date={date}
+              show={show}
+              onChange={(event, selectedDate) =>
+                onDateChange(event, selectedDate, setDate)
+              }
+              showDatePicker={showDatePicker}
+              label="Departure"
+            />
 
-        {/* Custom Checkbox */}
-        <CustomCheckbox checked={checked} toggleCheckbox={toggleCheckbox} />
+            {/* Custom Checkbox */}
+            <CustomCheckbox checked={checked} toggleCheckbox={toggleCheckbox} />
 
-        {checked && (
-          <DatePickerComponent
-            date={returnDate}
-            show={showReturn}
-            onChange={(event, selectedDate) =>
-              onReturnDateChange(event, selectedDate, setReturnDate)
-            }
-            showDatePicker={showDatePickerReturn}
-            label="Return"
-          />
-        )}
+            {checked && (
+              <DatePickerComponent
+                date={returnDate}
+                show={showReturn}
+                onChange={(event, selectedDate) =>
+                  onReturnDateChange(event, selectedDate, setReturnDate)
+                }
+                showDatePicker={showDatePickerReturn}
+                label="Return"
+              />
+            )}
 
-        <PrimaryButton title={'SEARCH NOW'} onPress={()=>navigation.navigate('BookingScreen')} />
-      </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+            <PrimaryButton
+              title={'SEARCH NOW'}
+              onPress={() => navigation.navigate('BookingScreen')}
+            />
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
+    </>
   );
 };
 
