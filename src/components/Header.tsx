@@ -18,13 +18,10 @@ const Header: FC<HeaderProps> = ({label, user, chat, back, step}) => {
     if (back) {
       navigation.goBack();
     } else {
-      console.log('Back button not enabled');
     }
   };
 
-  const handlePressRight = () => {
-    console.log('right button not enabled');
-  };
+  const handlePressRight = () => {};
 
   return (
     <View style={styles.container}>

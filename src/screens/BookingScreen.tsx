@@ -4,87 +4,11 @@ import FlightDetails from '../components/FlightDetails';
 import FilterButtons from '../components/FilterButtons';
 import FlightCardSelectable from '../components/FlightCardSelectable';
 import ScreenLayout from '../components/ScreenLayout';
+import {useSelector} from 'react-redux';
+import {RootState} from '../redux/store';
 
-type Flight = {
-  id: string;
-  airline: string;
-  classType: string;
-  date: string;
-  duration: string;
-  time1: string;
-  time2: string;
-  location1: string;
-  location2: string;
-  baggage1?: string;
-  baggage2?: string;
-  price: string;
-  airlineImg: any;
-  changeFlight?: string;
-  changeFlightStatus?: boolean;
-  airlineChangeFlight?: string;
-  classTypeChangeFlight?: string;
-  dateChangeFlight?: string;
-  durationChangeFlight?: string;
-  time1ChangeFlight?: string;
-  time2ChangeFlight?: string;
-  location1ChangeFlight?: string;
-  location2ChangeFlight?: string;
-};
-
-const flights: Flight[] = [
-  {
-    id: '1',
-    airline: 'Air India',
-    classType: 'Economy Class',
-    date: 'Mon, 20 May',
-    duration: '2H 55M',
-    time1: '07:55',
-    time2: '10:20',
-    location1: 'New Delhi',
-    location2: 'Goa (North)',
-    baggage1: '1 Cabin bag - 7kg',
-    baggage2: '2 Check-in Bags 23kg',
-    price: '₹2,340',
-    airlineImg: require('../../assets/airindia.png'),
-  },
-  {
-    id: '2',
-    airline: 'Air Arabiya',
-    classType: 'Economy Class',
-    date: 'Mon, 20 May',
-    duration: '2H 55M',
-    time1: '07:55',
-    time2: '10:20',
-    location1: 'New Delhi',
-    location2: 'Goa (North)',
-    price: '₹2,170 per adult',
-    airlineImg: require('../../assets/airarabiya.png'),
-  },
-  {
-    id: '3',
-    airline: 'Air Arabiya',
-    classType: 'Economy Class',
-    date: 'Mon, 20 May',
-    duration: '2H 55M',
-    time1: '07:55',
-    time2: '10:20',
-    location1: 'New Delhi',
-    location2: 'Goa (North)',
-    price: '₹2,170 per adult',
-    airlineImg: require('../../assets/airarabiya.png'),
-    changeFlight: 'Change flight | 8h layover',
-    changeFlightStatus: true,
-    airlineChangeFlight: 'Air Arabiya',
-    classTypeChangeFlight: 'Economy Class',
-    dateChangeFlight: 'Mon, 21 May',
-    durationChangeFlight: '2H 55M',
-    time1ChangeFlight: '07:55',
-    time2ChangeFlight: '10:20',
-    location1ChangeFlight: 'Goa (North)',
-    location2ChangeFlight: 'Mumbai',
-  },
-];
 const BookingScreen = ({navigation}: any) => {
+  const {flights, error} = useSelector((state: RootState) => state.flights);
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
   const [selectedSortOptions, setSelectedSortOptions] = useState<Set<string>>(
     new Set(),
@@ -97,7 +21,6 @@ const BookingScreen = ({navigation}: any) => {
   >(new Set());
   const [selectedClass, setSelectedClass] = useState<Set<string>>(new Set());
 
-  // Toggle Selection Function
   const toggleSelection = (
     setSelection: React.Dispatch<React.SetStateAction<Set<string>>>,
     option: string,
@@ -110,22 +33,24 @@ const BookingScreen = ({navigation}: any) => {
   };
 
   const selectedFlightDetails = useMemo(
-    () => flights.find(flight => flight.id === selectedFlight),
+    () => flights.find(flight => flight.id == selectedFlight),
     [selectedFlight],
   );
 
-  // Render Individual Flight
-  const renderFlightItem = ({item}: {item: Flight}) => (
-    <FlightCardSelectable
-      {...item}
-      detailsButton="FLIGHT DETAILS"
-      isSelected={item.id === selectedFlight}
-      onSelect={() => setSelectedFlight(item.id)}
-      onFlightDetails={() => navigation.navigate('FlightDetails')}
-    />
-  );
+  const renderFlightItem = ({item}: any) => {
+    return (
+      <FlightCardSelectable
+        item={item}
+        fare={item?.Fare}
+        detailsButton="FLIGHT DETAILS"
+        isSelected={item.id === selectedFlight}
+        onSelect={() => setSelectedFlight(item?.ResultIndex)}
+        navigationPath={'FlightDetails'}
+        ResultIndex={item?.ResultIndex}
+      />
+    );
+  };
 
-  // Render List Header
   const renderListHeader = () => (
     <View>
       <FlightDetails
@@ -162,8 +87,6 @@ const BookingScreen = ({navigation}: any) => {
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={renderListHeader}
         />
-
-        {/* Footer Buttons */}
         <View style={styles.footerButtons}>
           <View style={styles.applyButton}>
             <Text style={styles.applyButtonText}>
@@ -182,8 +105,6 @@ const BookingScreen = ({navigation}: any) => {
     </ScreenLayout>
   );
 };
-
-// Styles
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -229,5 +150,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 export default BookingScreen;

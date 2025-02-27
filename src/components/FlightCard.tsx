@@ -1,39 +1,9 @@
 import React, {memo} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import RoundCheckbox from './RoundCheckbox';
+import moment from 'moment';
 
-interface FlightCardProps {
-  airline: string;
-  classType: string;
-  date: string;
-  duration: string;
-  time1: string;
-  time2: string;
-  location1: string;
-  location2: string;
-  baggage1?: string;
-  baggage2?: string;
-  price: string;
-  detailsButton: string;
-  airlineImg: any;
-  isSelected: boolean;
-  onSelect: () => void;
-  changeFlight: string;
-  changeFlightStatus: boolean;
-  airlineChangeFlight: string;
-  classTypeChangeFlight: string;
-  dateChangeFlight: string;
-  durationChangeFlight: string;
-  time1ChangeFlight: string;
-  time2ChangeFlight: string;
-  location1ChangeFlight: string;
-  location2ChangeFlight: string;
-}
-
-const FlightTime: React.FC<{time1: string; time2: string}> = ({
-  time1,
-  time2,
-}) => (
+const FlightTime: React.FC<{time1: any; time2: any}> = ({time1, time2}) => (
   <View style={styles.flightTime}>
     <Text style={styles.timeText}>{time1}</Text>
     <Image
@@ -44,7 +14,7 @@ const FlightTime: React.FC<{time1: string; time2: string}> = ({
   </View>
 );
 
-const FlightLocation: React.FC<{location1: string; location2: string}> = ({
+const FlightLocation: React.FC<{location1: any; location2: any}> = ({
   location1,
   location2,
 }) => (
@@ -54,7 +24,7 @@ const FlightLocation: React.FC<{location1: string; location2: string}> = ({
   </View>
 );
 
-const AirPortName: React.FC<{location1: string; location2: string}> = ({
+const AirPortName: React.FC<{location1: any; location2: any}> = ({
   location1,
   location2,
 }) => (
@@ -78,7 +48,7 @@ const TerminalName: React.FC<{location1: string; location2: string}> = ({
   </View>
 );
 
-const FlightCard: React.FC<FlightCardProps> = ({
+const FlightCard = ({
   airline,
   classType,
   date,
@@ -104,24 +74,29 @@ const FlightCard: React.FC<FlightCardProps> = ({
   time2ChangeFlight,
   location1ChangeFlight,
   location2ChangeFlight,
-}) => {
+  AirportName,
+  AirportName2,
+  Terminal2,
+  Terminal,
+}: any) => {
   return (
     <>
       <View style={[styles.flightCard]}>
         {/* Flight Time */}
         <View style={styles.flightTime}>
-          <Text style={styles.timeText}>{date}</Text>
+          <Text style={styles.timeText}>{moment(date).format('DD MM YY')}</Text>
           <Text style={styles.durationText}>{duration}</Text>
-          <Text style={styles.timeText}>{date}</Text>
+          <Text style={styles.timeText}>{moment(date).format('DD MM YY')}</Text>
         </View>
 
-        <FlightTime time1={time1} time2={time2} />
-        <FlightLocation location1={location1} location2={location2} />
-        <AirPortName
-          location1={'AirPort Name AirPortName AirPortName'}
-          location2={' AirPort Name AirPortName AirPortName'}
+        <FlightTime
+          time1={moment(time1).format('HH:mm')}
+          time2={moment(time2).format('HH:mm')}
         />
-        <TerminalName location1={'Terminal 1'} location2={'Terminal 2'} />
+        <FlightLocation location1={location1} location2={location2} />
+        <AirPortName location1={AirportName} location2={AirportName2} />
+
+        <TerminalName location1={Terminal} location2={Terminal2} />
 
         <View style={styles.separator} />
 
@@ -189,7 +164,10 @@ const FlightCard: React.FC<FlightCardProps> = ({
                 <Text style={styles.timeText}>{dateChangeFlight}</Text>
               </View>
 
-              <FlightTime time1={time1ChangeFlight} time2={time2ChangeFlight} />
+              <FlightTime
+                time1={moment(time1ChangeFlight).format('HH:mm')}
+                time2={moment(time2ChangeFlight).format('HH:mm')}
+              />
               <FlightLocation location1={location1} location2={location2} />
               <AirPortName
                 location1={'AirPort Name AirPortName AirPortName'}

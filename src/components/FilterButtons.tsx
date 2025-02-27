@@ -116,16 +116,16 @@ const FilterButtons = ({
           title="Sort"
           options={SORT_OPTIONS}
           selectedOptions={selectedSortOptions}
-          onSelect={option => toggleSelection(setSelectedSortOptions, option)} // ✅ Use setter function
+          onSelect={option => toggleSelection(setSelectedSortOptions, option)}
         />
         <FilterActionSheet
           title="Filters"
           options={FILTER_OPTIONS}
           classType={CLASSTYPES}
           selectedOptions={selectedFiltersOptions}
-          onSelect={option => toggleSelection(setSelectedFiltersOptions, option)} // ✅ Use setter function
+          onSelect={option => toggleSelection(setSelectedFiltersOptions, option)}
           selectedClass={selectedClass}
-          onSelectClass={option => toggleSelection(setSelectedClass, option)} // ✅ Use setter function
+          onSelectClass={option => toggleSelection(setSelectedClass, option)}
         />
       </View>
     </View>

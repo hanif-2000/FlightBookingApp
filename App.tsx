@@ -1,11 +1,9 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {Provider} from 'react-redux';
-import {store} from './src/redux/store';
+// import {Provider} from 'react-redux';
 import AppNavigator from './src/navigation/AppNavigator';
 import {StyleSheet, SafeAreaView} from 'react-native';
-
-const Stack = createStackNavigator();
+import { Provider } from 'react-redux';
+import  store  from './src/redux/store';
 
 const App = () => {
   return (

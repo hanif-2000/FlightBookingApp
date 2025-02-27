@@ -1,35 +1,8 @@
 import React, {memo} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import RoundCheckbox from './RoundCheckbox';
-
-interface FlightCardProps {
-  airline: string;
-  classType: string;
-  date: string;
-  duration: string;
-  time1: string;
-  time2: string;
-  location1: string;
-  location2: string;
-  baggage1?: string;
-  baggage2?: string;
-  price: string;
-  detailsButton: string;
-  airlineImg: any;
-  isSelected: boolean;
-  onSelect: () => void;
-  changeFlight: string;
-  changeFlightStatus: boolean;
-  airlineChangeFlight: string;
-  classTypeChangeFlight: string;
-  dateChangeFlight: string;
-  durationChangeFlight: string;
-  time1ChangeFlight: string;
-  time2ChangeFlight: string;
-  location1ChangeFlight?: string;
-  location2ChangeFlight?: string;
-  onFlightDetails?: () => void;
-}
+import moment from 'moment';
+import {useNavigation} from '@react-navigation/native';
 
 const FlightTime: React.FC<{time1: string; time2: string}> = ({
   time1,
@@ -48,64 +21,52 @@ const FlightTime: React.FC<{time1: string; time2: string}> = ({
 const FlightLocation: React.FC<{location1: string; location2: string}> = ({
   location1,
   location2,
+  onFlightDetails,
 }) => (
   <View style={styles.flightLocation}>
     <Text style={styles.locationText}>{location1}</Text>
-    <Text style={styles.locationText}>{location2}</Text>
+    <Text style={[styles.locationText, {textAlign: 'right'}]}>{location2}</Text>
   </View>
 );
 
-const PriceDetails: React.FC<{price: string; detailsButton: string;onFlightDetails?:()=>void}> = ({
-  price,
-  detailsButton,
-  onFlightDetails
-}) => (
+const PriceDetails: React.FC<{
+  price: string;
+  detailsButton: string;
+  onFlightDetails?: () => void;
+}> = ({price, detailsButton, onFlightDetails}) => (
   <View style={styles.priceDetails}>
     <Text style={styles.priceText}>{price}</Text>
-    <TouchableOpacity style={styles.detailsButton} onPress={onFlightDetails} >
+    <TouchableOpacity style={styles.detailsButton} onPress={onFlightDetails}>
       <Text style={styles.detailsButtonText}>{detailsButton}</Text>
     </TouchableOpacity>
   </View>
 );
 
-const FlightCardSelectable: React.FC<FlightCardProps> = ({
-  airline,
-  classType,
-  date,
-  duration,
-  time1,
-  time2,
-  location1,
-  location2,
-  baggage1 = 'Cabin: 7kg',
-  baggage2 = 'Check-in: 15kg',
-  price,
-  detailsButton,
-  airlineImg,
+const FlightCardSelectable = ({
   isSelected,
   onSelect,
-  changeFlight,
-  changeFlightStatus,
-  airlineChangeFlight,
-  classTypeChangeFlight,
-  dateChangeFlight,
-  durationChangeFlight,
-  time1ChangeFlight,
-  time2ChangeFlight,
-  location1ChangeFlight,
-  location2ChangeFlight,
-  onFlightDetails,
-}) => {
+  item,
+  detailsButton,
+  fare,
+  ResultIndex,
+}: any) => {
+  const navigation = useNavigation();
+  let tmp = item?.Segments && item.Segments[0] && item.Segments[0][0];
 
-
+  const onFlightDetails = () => {
+    navigation.navigate('FlightDetails', {ResultIndex: ResultIndex});
+  };
   return (
     <View style={[styles.flightCard]}>
       {/* Airline Details */}
       <View style={styles.airlineDetails}>
-        <Image source={airlineImg} style={styles.airlineImage} />
+        <Image
+          source={require('../../assets/indigo.png')}
+          style={styles.airlineImage}
+        />
         <View>
-          <Text style={styles.airlineClass}>{airline}</Text>
-          <Text style={styles.economyClass}>{classType}</Text>
+          <Text style={styles.airlineClass}>{tmp?.Airline?.AirlineName}</Text>
+          <Text style={styles.economyClass}>{tmp?.SupplierFareClass}</Text>
         </View>
         <RoundCheckbox isSelected={isSelected} onSelect={onSelect} />
       </View>
@@ -114,20 +75,53 @@ const FlightCardSelectable: React.FC<FlightCardProps> = ({
 
       {/* Flight Time */}
       <View style={styles.flightTime}>
-        <Text style={styles.timeText}>{date}</Text>
-        <Text style={styles.durationText}>{duration}</Text>
-        <Text style={styles.timeText}>{date}</Text>
+        <Text style={styles.timeText}>
+          {moment(tmp?.Destination?.ArrTime).format('DD-MM-YY')}
+        </Text>
+        <Text style={styles.durationText}>{tmp?.Duration}</Text>
+        <Text style={styles.timeText}>
+          {moment(tmp?.Origin?.DepTime).format('DD-MM-YY')}
+        </Text>
       </View>
 
-      <FlightTime time1={time1} time2={time2} />
-      <FlightLocation location1={location1} location2={location2} />
+      <FlightTime
+        time1={moment(tmp?.Destination?.ArrTime).format('HH:mm')}
+        time2={moment(tmp?.Origin?.DepTime).format('HH:mm')}
+      />
+      <FlightLocation
+        location1={tmp?.Origin?.Airport?.AirportName}
+        location2={tmp?.Destination?.Airport?.AirportName}
+      />
 
       {/* Baggage Details */}
       <View style={styles.baggageDetails}>
-        <Text style={styles.baggageText}>{baggage1}</Text>
-        <Text style={styles.baggageText}>{baggage2}</Text>
+        <View
+          style={{
+            padding: 10,
+            borderColor: '#FFFFFF1F',
+            borderWidth: 1,
+            borderRadius: 12,
+            width: '45%',
+            alignItems: 'center',
+            backgroundColor: '#FFFFFF0D',
+          }}>
+          <Text style={styles.baggageText}>{tmp?.Baggage}</Text>
+        </View>
+        <View
+          style={{
+            padding: 10,
+            borderColor: '#FFFFFF1F',
+            borderWidth: 1,
+            borderRadius: 12,
+            width: '45%',
+            alignItems: 'center',
+            backgroundColor: '#FFFFFF0D',
+          }}>
+          <Text style={styles.baggageText}>{tmp?.CabinBaggage}</Text>
+        </View>
       </View>
-      {changeFlightStatus && (
+
+      {tmp?.StopOver && (
         <>
           <View
             style={{
@@ -156,7 +150,9 @@ const FlightCardSelectable: React.FC<FlightCardProps> = ({
                 borderRadius: 12,
                 marginVertical: 10,
               }}>
-              <Text style={{color: '#FFFFFFCC'}}>{changeFlight}</Text>
+              <Text style={{color: '#FFFFFFCC'}}>
+                Change flight | 8h layover
+              </Text>
             </View>
             <View
               style={{
@@ -169,27 +165,57 @@ const FlightCardSelectable: React.FC<FlightCardProps> = ({
 
           {/* Flight Time */}
           <View style={styles.flightTime}>
-            <Text style={styles.timeText}>{dateChangeFlight}</Text>
-            <Text style={styles.durationText}>{durationChangeFlight}</Text>
-            <Text style={styles.timeText}>{dateChangeFlight}</Text>
+            <Text style={styles.timeText}>
+              {moment(tmp?.Destination?.ArrTime).format('DD-MM-YY')}
+            </Text>
+            <Text style={styles.durationText}>{tmp?.Duration}</Text>
+            <Text style={styles.timeText}>
+              {' '}
+              {moment(tmp?.Origin?.DepTime).format('DD-MM-YY')}
+            </Text>
           </View>
 
-          <FlightTime time1={time1ChangeFlight} time2={time2ChangeFlight} />
-          <FlightLocation
-            location1={location1ChangeFlight}
-            location2={location2ChangeFlight}
+          <FlightTime
+            time1={moment(tmp?.StopPointArrivalTime).format('HH:mm')}
+            time2={moment(tmp?.StopPointDepartureTime).format('HH:mm')}
           />
 
           {/* Baggage Details */}
           <View style={styles.baggageDetails}>
-            <Text style={styles.baggageText}>{baggage1}</Text>
-            <Text style={styles.baggageText}>{baggage2}</Text>
+            <View
+              style={{
+                padding: 10,
+                borderColor: '#FFFFFF1F',
+                borderWidth: 1,
+                borderRadius: 12,
+                width: '45%',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF0D',
+              }}>
+              <Text style={styles.baggageText}>{tmp?.Baggage}</Text>
+            </View>
+            <View
+              style={{
+                padding: 10,
+                borderColor: '#FFFFFF1F',
+                borderWidth: 1,
+                borderRadius: 12,
+                width: '45%',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF0D',
+              }}>
+              <Text style={styles.baggageText}>{tmp?.CabinBaggage}</Text>
+            </View>
           </View>
         </>
       )}
 
       {/* Price & Details Button */}
-      <PriceDetails price={price} detailsButton={detailsButton} onFlightDetails={onFlightDetails} />
+      <PriceDetails
+        price={`${fare?.Currency} ${fare?.PublishedFare}`}
+        detailsButton={detailsButton}
+        onFlightDetails={() => onFlightDetails()}
+      />
     </View>
   );
 };
@@ -266,12 +292,14 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 16,
     color: '#FFFFFF',
+    width: '40%',
   },
   baggageDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
     paddingHorizontal: 10,
+    marginBottom: 10,
   },
   baggageText: {
     fontSize: 14,
@@ -284,9 +312,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
     backgroundColor: '#272727',
     padding: 10,
-    borderBottomRightRadius:10,
-    borderBottomLeftRadius:10,
-    borderColor:'#FFFFFF1F'
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderColor: '#FFFFFF1F',
   },
   priceText: {
     fontSize: 20,

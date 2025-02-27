@@ -303,6 +303,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+    marginHorizontal:10
   },
   supportText: {
     color: '#fff',

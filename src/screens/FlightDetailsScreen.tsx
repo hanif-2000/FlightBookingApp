@@ -1,73 +1,108 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import FlightDetailsCard from '../components/FlightDetailsCard';
 import FlightCard from '../components/FlightCard';
 import {FlatList} from 'react-native-gesture-handler';
 import PolicySection from '../components/PolicySection';
 import ScreenLayout from '../components/ScreenLayout';
+import {useRoute} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../redux/store';
+import {
+  clearFareDetails,
+  fetchFareDetails,
+} from '../redux/slices/fareQuoteSlice';
+import {convertMinutesToHoursMinutes} from '../utils/CommonFunction';
 
-const flights = [
-  {
-    id: '3',
-    airline: 'Air Arabiya',
-    classType: 'Economy Class',
-    date: 'Mon, 20 May',
-    duration: '2H 55M',
-    time1: '07:55',
-    time2: '10:20',
-    location1: 'New Delhi',
-    location2: 'Goa (North)',
-    price: '₹2,170 per adult',
-    airlineImg: require('../../assets/airarabiya.png'),
-    changeFlight: 'Change flight | 8h layover',
-    changeFlightStatus: true,
-    airlineChangeFlight: 'Air Arabiya',
-    classTypeChangeFlight: 'Economy Class',
-    dateChangeFlight: 'Mon, 21 May',
-    durationChangeFlight: '2H 55M',
-    time1ChangeFlight: '07:55',
-    time2ChangeFlight: '10:20',
-    location1ChangeFlight: 'Goa (North)',
-    location2ChangeFlight: 'Mumbai',
-  },
-];
-
-const FlightDetailsScreen = () => {
-  const renderFlightItem = ({item}: any) => (
-    <FlightCard {...item} detailsButton="FLIGHT DETAILS" />
+const FlightDetailsScreen = ({navigation}:any) => {
+  const route = useRoute();
+  const {ResultIndex} = route.params as {ResultIndex: any};
+  const dispatch = useDispatch<AppDispatch>();
+  const {traceId} = useSelector((state: RootState) => state.flights);
+  const [sagmentData, setSegmentData] = useState();
+  const {fareDetails, error} = useSelector(
+    (state: RootState) => state.fareQuote,
   );
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    if (traceId && ResultIndex) {
+      dispatch(fetchFareDetails({traceId, ResultIndex}));
+    }
+    setLoading(false);
+
+    return () => {
+      dispatch(clearFareDetails());
+      setLoading(false);
+    };
+  }, [traceId, ResultIndex]);
+
+  const renderFlightItem = ({item}: {item: any}) => {
+    // Extract segment details
+    const firstSegment = item.Segments[0]?.[0];
+    const lastSegment = item.Segments[0]?.[item.Segments[0].length - 1];
+    setSegmentData(firstSegment);
+    const mappedFlight = {
+      airline: item.ValidatingAirline || 'Unknown Airline',
+      classType: 'Economy',
+      date: '2025-03-01',
+      duration: convertMinutesToHoursMinutes(firstSegment?.Duration) || 'N/A',
+      time1: firstSegment?.Origin?.DepTime || 'N/A',
+      time2: lastSegment?.Destination?.ArrTime || 'N/A',
+      location1: firstSegment?.Origin?.Airport?.CityName || 'N/A',
+      location2: lastSegment?.Destination?.Airport?.CityName || 'N/A',
+      AirportName: firstSegment?.Origin?.Airport?.AirportName || 'N/A',
+      AirportName2: lastSegment?.Origin?.Airport?.AirportName || 'N/A',
+      Terminal: firstSegment?.Origin?.Airport?.Terminal || 'N/A',
+      Terminal2: lastSegment?.Origin?.Airport?.Terminal || 'N/A',
+      baggage1: 'Cabin: 7kg',
+      baggage2: `Check-in: ${item.Fare?.TotalBaggageCharges || 'N/A'} kg`,
+      price: `₹${item.Fare?.PublishedFare?.toLocaleString('en-IN') || 'N/A'}`,
+    };
+
+    return <FlightCard {...mappedFlight} detailsButton="FLIGHT DETAILS" />;
+  };
 
   return (
     <ScreenLayout label={'Flight Details'} back>
-      <ScrollView  keyboardShouldPersistTaps="handled" style={styles.container}>
-        {/* Flight Information */}
+      {loading && (
+        <Modal transparent visible={loading}>
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#fff" />
+          </View>
+        </Modal>
+      )}
+      <ScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
         <FlightDetailsCard
-          airlineName="Indigo"
-          flightCode="QP - 1355"
-          route="New Delhi To Goa North"
+          airlineName={sagmentData?.Airline?.AirlineName}
+          flightCode={`${sagmentData?.Airline?.AirlineCode} ${sagmentData?.Airline?.FlightNumber}`}
+          route={`${sagmentData?.Origin?.Airport?.CityName} To ${sagmentData?.Destination?.Airport?.CityName}`}
           date="3rd October"
           day="Thursday"
           classType="economy"
-          price="+ 2,150"
+          price={fareDetails?.Results?.Fare?.BaseFare}
           icon={require('../../assets/location.png')}
           layoff={require('../../assets/indigo.png')}
           down={require('../../assets/trend-down.png')}
         />
-
         <FlatList
-          data={flights}
+          data={fareDetails?.Results ? [fareDetails.Results] : []}
           keyExtractor={item => item.id}
           renderItem={renderFlightItem}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
-          // ListHeaderComponent={renderListHeader}
         />
+
         <Text
           style={{
             color: '#FFFFFF99',
@@ -83,8 +118,8 @@ const FlightDetailsScreen = () => {
         <PolicySection
           title="FARE BREAKUP"
           data={[
-            {label: 'Base Fare', value: '₹4,340'},
-            {label: 'Surcharges', value: '₹360'},
+            {label: 'Base Fare', value: fareDetails?.Results?.Fare?.BaseFare},
+            {label: 'Surcharges', value: fareDetails?.Results?.Fare?.Tax},
             {label: 'Total Fare', value: '₹4,700'},
             {label: 'Change in Itinerary', value: '+ ₹2,340'},
           ]}
@@ -110,7 +145,6 @@ const FlightDetailsScreen = () => {
           ]}
         />
 
-        {/* Terms & Conditions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>TERMS & CONDITIONS</Text>
           {[
@@ -130,14 +164,15 @@ const FlightDetailsScreen = () => {
           ))}
         </View>
       </ScrollView>
-      {/* Fixed Footer Buttons */}
       <View style={styles.footerButtons}>
         <View style={styles.applyButton}>
-          <Text style={styles.applyButtonText}>+ 2,150 per adult</Text>
+          <Text style={styles.applyButtonText}>
+            {fareDetails?.Results?.Fare?.BaseFare}
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.bookButton}
-          // onPress={() => navigation.navigate('FlightDetails')}
+          onPress={() => navigation.navigate('ReviewFlight')}
         >
           <Text style={styles.bookButtonText}>BOOK NOW</Text>
         </TouchableOpacity>
@@ -149,13 +184,16 @@ const FlightDetailsScreen = () => {
 export default FlightDetailsScreen;
 
 const styles = StyleSheet.create({
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#121212', // Dark mode background
+    backgroundColor: '#121212',
     padding: 15,
   },
-
-  // Header
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -172,8 +210,6 @@ const styles = StyleSheet.create({
     height: 28,
     tintColor: '#ffffff',
   },
-
-  // Flight Card
   flightCard: {
     backgroundColor: '#1E1E1E',
     padding: 15,
@@ -221,10 +257,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   listContainer: {
-    paddingBottom: 10, // Ensure scrolling space above the buttons
+    paddingBottom: 10,
     paddingTop: 20,
   },
-  // Flight Timings
   flightInfoCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -248,8 +283,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
   },
-
-  // Locations
   locationRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -259,8 +292,6 @@ const styles = StyleSheet.create({
     color: '#a5a5a5',
     fontSize: 15,
   },
-
-  // Baggage
   baggageRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -308,15 +339,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
   },
-
-  // Terms & Conditions
   termsText: {
     color: '#a5a5a5',
     fontSize: 13,
     marginBottom: 6,
   },
-
-  // Book Now Button
   bookNowButton: {
     backgroundColor: '#10E0F9',
     paddingVertical: 12,

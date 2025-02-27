@@ -99,7 +99,9 @@ const FilterActionSheet: React.FC<FilterActionSheetProps> = ({
           <View style={styles.separator} />
 
           {/* Scrollable Options */}
-          <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.selectableList}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={styles.selectableList}>
             {selectedTab === 'Airline'
               ? options.map(({airlineName, airlineLogo}) => (
                   <View key={airlineName} style={styles.selectableButton}>

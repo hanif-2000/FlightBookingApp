@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import flightReducer from './slices/flightSlice';
-
+import flightsReducer from './slices/flightsSlice'; // ✅ Correct path
+import fareQuoteReducer from './slices/fareQuoteSlice'
 export const store = configureStore({
   reducer: {
-    flight: flightReducer,
+    flights: flightsReducer,
+    fareQuote: fareQuoteReducer,
   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export default store;
