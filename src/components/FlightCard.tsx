@@ -1,7 +1,8 @@
 import React, {memo} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import RoundCheckbox from './RoundCheckbox';
 import moment from 'moment';
+import { formatDate } from '../utils/CommonFunction';
 
 const FlightTime: React.FC<{time1: any; time2: any}> = ({time1, time2}) => (
   <View style={styles.flightTime}>
@@ -83,9 +84,9 @@ const FlightCard = ({
     <>
       <View style={[styles.flightCard]}>
         <View style={styles.flightTime}>
-          <Text style={styles.timeText}>{moment(date).format('DD MM YY')}</Text>
+          <Text style={styles.timeText}>{formatDate(date)}</Text>
           <Text style={styles.durationText}>{duration}</Text>
-          <Text style={styles.timeText}>{moment(date).format('DD MM YY')}</Text>
+          <Text style={styles.timeText}>{formatDate(date)}</Text>
         </View>
         <FlightTime
           time1={moment(time1).format('HH:mm')}

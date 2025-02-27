@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import RoundCheckbox from './RoundCheckbox';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
+import {formatDate} from '../utils/CommonFunction';
 
 const FlightTime: React.FC<{time1: string; time2: string}> = ({
   time1,
@@ -72,12 +73,10 @@ const FlightCardSelectable = ({
       <View style={styles.separator} />
       <View style={styles.flightTime}>
         <Text style={styles.timeText}>
-          {moment(tmp?.Destination?.ArrTime).format('DD-MM-YY')}
+          {formatDate(tmp?.Destination?.ArrTime)}
         </Text>
         <Text style={styles.durationText}>{tmp?.Duration}</Text>
-        <Text style={styles.timeText}>
-          {moment(tmp?.Origin?.DepTime).format('DD-MM-YY')}
-        </Text>
+        <Text style={styles.timeText}>{formatDate(tmp?.Origin?.DepTime)}</Text>
       </View>
       <FlightTime
         time1={moment(tmp?.Destination?.ArrTime).format('HH:mm')}
@@ -157,12 +156,11 @@ const FlightCardSelectable = ({
           </View>
           <View style={styles.flightTime}>
             <Text style={styles.timeText}>
-              {moment(tmp?.Destination?.ArrTime).format('DD-MM-YY')}
+              {formatDate(tmp?.Destination?.ArrTime)}
             </Text>
             <Text style={styles.durationText}>{tmp?.Duration}</Text>
             <Text style={styles.timeText}>
-              {' '}
-              {moment(tmp?.Origin?.DepTime).format('DD-MM-YY')}
+              {formatDate(tmp?.Origin?.DepTime)}
             </Text>
           </View>
           <FlightTime
@@ -250,7 +248,7 @@ const styles = StyleSheet.create({
   separator: {
     borderBottomColor: '#FFFFFF1F',
     borderBottomWidth: 1,
-    marginVertical: 10,
+    marginBottom: 10,
   },
   flightTime: {
     flexDirection: 'row',
