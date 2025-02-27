@@ -91,7 +91,6 @@ const PoliciesScreen = () => {
   return (
     <ScreenLayout label={'policies'} back>
     <View style={styles.container}>
-      {/* Policy Tabs */}
       <View style={styles.tabs}>
         {policies.map(policy => (
           <TouchableOpacity
@@ -111,8 +110,6 @@ const PoliciesScreen = () => {
           </TouchableOpacity>
         ))}
       </View>
-
-      {/* Policy Details */}
       <View style={styles.policyContent}>
         <Text style={styles.policyTitle}>{selectedPolicy.toUpperCase()}</Text>
         {renderPolicyContent()}
@@ -174,8 +171,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   policyContent: {
-    // backgroundColor: '#1E1E1E',
-    // padding: 15,
     borderRadius: 10,
     marginBottom: 20,
   },

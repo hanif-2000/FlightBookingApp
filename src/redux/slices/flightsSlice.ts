@@ -15,7 +15,6 @@ const initialState: FlightState = {
   error: null,
 };
 
-// ✅ Async Thunk to fetch flights
 export const fetchFlights = createAsyncThunk(
   'flights/fetchFlights',
   async (searchParams: any, { rejectWithValue }) => {

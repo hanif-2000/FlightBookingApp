@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, ScrollView} from 'react-native';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
-
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Foundation from 'react-native-vector-icons/Foundation';
 import ScreenLayout from '../components/ScreenLayout';
@@ -166,7 +165,6 @@ const BookingDetailsStyles = StyleSheet.create({
 const FlightTicket = () => {
   return (
     <View style={styles.container}>
-      {/* Airline Info */}
       <View style={styles.airlineRow}>
         <Image
           source={require('../../assets/airindia.png')}
@@ -177,14 +175,11 @@ const FlightTicket = () => {
           <Text style={styles.classText}>Economy Class</Text>
         </View>
       </View>
-
-      {/* Flight Details */}
       <View style={styles.detailsContainer}>
         <Text style={styles.dateText}>Mon, 20 May</Text>
         <Text style={styles.durationText}>2H 55M</Text>
         <Text style={styles.dateText}>Mon, 20 May</Text>
       </View>
-
       <View style={styles.flightRow}>
         <View style={styles.cityContainer}>
           <Text style={styles.timeText}>07:55</Text>
@@ -196,8 +191,6 @@ const FlightTicket = () => {
           <Text style={styles.cityText}>Hyderabad</Text>
         </View>
       </View>
-
-      {/* Baggage Info */}
       <View style={styles.baggageContainer}>
         <View style={styles.baggageBox}>
           <Text style={styles.baggageText}>1 Cabin bag - 7kg</Text>
@@ -303,7 +296,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-    marginHorizontal:10
+    marginHorizontal: 10,
   },
   supportText: {
     color: '#fff',
@@ -367,14 +360,11 @@ const FlightTicket2: React.FC<FlightProps> = ({
 }) => {
   return (
     <View style={FlightTicket2Styles.container}>
-      {/* Flight Date & Duration */}
       <View style={FlightTicket2Styles.dateContainer}>
         <Text style={FlightTicket2Styles.dateText}>Mon, 20 May</Text>
         <Text style={FlightTicket2Styles.durationText}>{duration}</Text>
         <Text style={FlightTicket2Styles.dateText}>Mon, 20 May</Text>
       </View>
-
-      {/* Flight Route */}
       <View style={FlightTicket2Styles.flightRow}>
         <View style={FlightTicket2Styles.cityContainer}>
           <Text style={FlightTicket2Styles.timeText}>{departureTime}</Text>
@@ -387,9 +377,7 @@ const FlightTicket2: React.FC<FlightProps> = ({
             Terminal {departureTerminal}
           </Text>
         </View>
-
         <Image source={require('../../assets/ongoing.png')} />
-
         <View style={FlightTicket2Styles.cityContainer}>
           <Text
             style={[
@@ -428,8 +416,6 @@ const FlightTicket2: React.FC<FlightProps> = ({
           </Text>
         </View>
       </View>
-
-      {/* Baggage Information */}
       <View style={FlightTicket2Styles.baggageContainer}>
         <View style={FlightTicket2Styles.baggageBox}>
           <Text style={FlightTicket2Styles.baggageText}>1 Cabin bag - 7kg</Text>
@@ -476,9 +462,6 @@ const FlightTicket2Styles = StyleSheet.create({
     marginBottom: 16,
   },
   cityContainer: {
-    // alignItems: 'center',
-    // borderWidth: 1,
-    // backgroundColor: 'red',
     width: '35%',
   },
   timeText: {
@@ -494,7 +477,6 @@ const FlightTicket2Styles = StyleSheet.create({
   airportText: {
     color: '#aaa',
     fontSize: 12,
-    // width: '30%',
   },
   terminalText: {
     color: '#888',
@@ -545,10 +527,9 @@ const LayoverStyles = StyleSheet.create({
   },
 });
 
-const BillingDetails = ({navigation}: any) => {
+const BillingDetails = () => {
   return (
     <View style={BillingDetailsStyles.container}>
-      {/* Action Buttons */}
       <View style={BillingDetailsStyles.actionContainer}>
         <ActionButton
           icon={require('../../assets/cancelFlight.png')}
@@ -563,8 +544,6 @@ const BillingDetails = ({navigation}: any) => {
           text="Check refund"
         />
       </View>
-
-      {/* Billing Information */}
       <View style={BillingDetailsStyles.billingBox}>
         <Text style={BillingDetailsStyles.billingTitle}>Billing Details</Text>
         <View
@@ -594,14 +573,11 @@ const BillingDetails = ({navigation}: any) => {
           </Text>
         </View>
       </View>
-
-      {/* Fare Summary */}
       <View style={BillingDetailsStyles.fareContainer}>
         <Text style={BillingDetailsStyles.fareTitle}>Fare Summary</Text>
         <Text style={BillingDetailsStyles.travellerInfo}>
           4 Travellers, 3 Adults, 1 Child
         </Text>
-
         <View style={BillingDetailsStyles.fareBox}>
           <FareRow label="Base Fare" amount="₹4,340" />
           <View
@@ -618,25 +594,18 @@ const BillingDetails = ({navigation}: any) => {
           </View>
         </View>
       </View>
-
-      {/* Note Section */}
       <View style={BillingDetailsStyles.noteContainer}>
         <Text style={BillingDetailsStyles.noteTitle}>⚠️ Note</Text>
         <Text style={BillingDetailsStyles.noteText}>
           1. This ticket is non-refundable.
         </Text>
       </View>
-
-
-<FarePolicies/>
-      {/* Customer Support */}
+      <FarePolicies />
       <Text style={styles.sectionTitle}>CUSTOMER HELP & SUPPORT</Text>
       <TouchableOpacity style={styles.supportBox}>
         <Text style={styles.supportText}>1800-0001-5456-51515</Text>
         <FontAwesome5 name="headphones" color={'#fff'} size={20} />
       </TouchableOpacity>
-
-      {/* Download Buttons */}
       <View style={styles.downloadContainer}>
         <DownloadButton
           icon={require('../../assets/ticket.png')}
@@ -651,7 +620,6 @@ const BillingDetails = ({navigation}: any) => {
   );
 };
 
-// Download Button Component
 const DownloadButton = ({icon, text}: {icon: any; text: string}) => (
   <TouchableOpacity style={styles.downloadButton}>
     <Image source={icon} style={styles.downloadIcon} />
@@ -659,8 +627,6 @@ const DownloadButton = ({icon, text}: {icon: any; text: string}) => (
   </TouchableOpacity>
 );
 
-
-// Action Button Component
 const ActionButton = ({icon, text}: {icon: any; text: string}) => (
   <TouchableOpacity style={BillingDetailsStyles.actionButton}>
     <Image source={icon} style={BillingDetailsStyles.actionIcon} />
@@ -668,7 +634,6 @@ const ActionButton = ({icon, text}: {icon: any; text: string}) => (
   </TouchableOpacity>
 );
 
-// Fare Row Component
 const FareRow = ({label, amount}: {label: string; amount: string}) => (
   <View style={BillingDetailsStyles.fareRow}>
     <Text style={BillingDetailsStyles.fareLabel}>{label}</Text>

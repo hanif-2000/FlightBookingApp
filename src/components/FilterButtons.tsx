@@ -106,7 +106,7 @@ const FilterButtons = ({
             key={label}
             label={label}
             isSelected={selectedFilters.has(label)}
-            onPress={() => toggleSelection(setSelectedFilters, label)} // ✅ Use setter function
+            onPress={() => toggleSelection(setSelectedFilters, label)}
           />
         ))}
       </ScrollView>

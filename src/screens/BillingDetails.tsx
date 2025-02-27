@@ -26,7 +26,6 @@ const BillingDetails = ({navigation}:any) => {
   const [city, setCity] = useState(null);
   const [state, setState] = useState(null);
 
-  // Use `useCallback` to prevent unnecessary re-renders
   const toggleCollapse = useCallback(() => {
     setIsCollapsed(!isCollapsed);
   }, []);
@@ -37,15 +36,12 @@ const BillingDetails = ({navigation}:any) => {
       <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 140}}>
       <KeyboardAwareWrapper>
         <View style={styles.container}>
-          {/* Billing Details Header */}
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Billing Details</Text>
             <Text style={styles.headerSubtitle}>
               Review and update your billing details
             </Text>
           </View>
-
-          {/* Email Field */}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
             <TextInput
@@ -54,8 +50,6 @@ const BillingDetails = ({navigation}:any) => {
               placeholderTextColor={'#fff'}
             />
           </View>
-
-          {/* Mobile Field */}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Mobile</Text>
             <View
@@ -70,11 +64,8 @@ const BillingDetails = ({navigation}:any) => {
                 placeholder="+918073734941"
                 keyboardType="name-phone-pad"
               />
-              {/* <Text style={styles.phoneNumber}>+91 (807) - 3734 - 941</Text> */}
             </View>
           </View>
-
-          {/* GST Toggle */}
           <View style={styles.switchContainer}>
             <Text style={styles.label}>Include GST Details</Text>
             <Switch
@@ -84,8 +75,6 @@ const BillingDetails = ({navigation}:any) => {
               thumbColor={gstEnabled ? '#ffffff' : '#f4f3f4'}
             />
           </View>
-
-          {/* Pincode */}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Pincode</Text>
             <TextInput
@@ -94,8 +83,6 @@ const BillingDetails = ({navigation}:any) => {
               placeholderTextColor="#888"
             />
           </View>
-
-          {/* Address */}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Address</Text>
             <TextInput
@@ -111,7 +98,6 @@ const BillingDetails = ({navigation}:any) => {
               selectedValue={city}
               onSelect={setCity}
             />
-
           <CustomDropdown
               label="State"
               placeHolder="Select your State"
@@ -121,9 +107,7 @@ const BillingDetails = ({navigation}:any) => {
             />
         </View>
         </KeyboardAwareWrapper>
-
       </ScrollView>
-      {/* Fare Summary */}
       <View style={styles.bottomView}>
         <Text style={styles.fareSummaryText}>Fare Summary</Text>
         <TouchableOpacity style={styles.toggleButton} onPress={toggleCollapse}>
@@ -132,7 +116,6 @@ const BillingDetails = ({navigation}:any) => {
           </Text>
           <Text style={styles.arrowIcon}>{isCollapsed ? '▼' : '▲'}</Text>
         </TouchableOpacity>
- 
          <Collapsible collapsed={isCollapsed}>
           <View style={styles.fareDetails}>
             <View style={styles.row}>
@@ -153,8 +136,6 @@ const BillingDetails = ({navigation}:any) => {
             </View>
           </View>
         </Collapsible>
-
-        {/* Footer Buttons */}
         <View style={styles.footerButtons}>
           <View style={styles.applyButton}>
             <Text style={styles.applyButtonText}>+ 2,150 per adult</Text>
@@ -198,16 +179,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 12,
   },
-  //   label: {
-  //     fontSize: 14,
-  //     color: '#fff',
-  //     marginBottom: 5,
-  //   },
+
   input: {
     fontSize: 16,
     color: '#fff',
-    borderBottomWidth: 1, // Bottom border width
-    borderBottomColor: '#444', // Bottom border color (adjust as needed)
+    borderBottomWidth: 1,
+    borderBottomColor: '#444', 
   },
   row: {
     flexDirection: 'row',
@@ -273,11 +250,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
-  //   row: {
-  //     flexDirection: 'row',
-  //     justifyContent: 'space-between',
-  //     paddingVertical: 8,
-  //   },
   label: {
     color: '#fff',
     fontSize: 14,

@@ -27,7 +27,7 @@ const BookingOptions = ({
               <TouchableOpacity
                 activeOpacity={0.7}
                 key={item.id}
-                style={[styles.option, selected === item.id && styles.selected]}
+                style={[styles.option]}
                 onPress={() => onSelect(item.id)}>
                 <Image
                   source={item.icon}
@@ -47,11 +47,7 @@ const BookingOptions = ({
             <TouchableOpacity
               activeOpacity={0.7}
               key={item.id}
-              style={[
-                styles.option,
-                {backgroundColor: '#FFFFFF'},
-                selected === item.id && styles.selected,
-              ]}
+              style={[styles.option, {backgroundColor: '#FFFFFF'}]}
               onPress={() => onSelect(item.id)}>
               <Image
                 source={item.icon}
@@ -93,9 +89,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 60,
     marginBottom: 20,
-  },
-  selected: {
-    // backgroundColor: '#0052FF',
   },
   icon: {
     width: 24,

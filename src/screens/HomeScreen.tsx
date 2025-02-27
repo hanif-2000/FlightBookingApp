@@ -7,8 +7,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
-  Text,
-  FlatList,
 } from 'react-native';
 import BookingOptions from '../components/BookingOptions';
 import DatePickerComponent from '../components/DatePickerComponent';
@@ -16,8 +14,7 @@ import CustomCheckbox from '../components/CustomCheckbox';
 import PrimaryButton from '../components/PrimaryButton';
 import CustomDropdown from '../components/CustomDropdown';
 import ScreenLayout from '../components/ScreenLayout';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../redux/store';
+import {useDispatch} from 'react-redux';
 import {fetchFlights} from '../redux/slices/flightsSlice';
 
 const FlightBookingScreen = ({navigation}: any) => {
@@ -56,12 +53,10 @@ const FlightBookingScreen = ({navigation}: any) => {
     {label: 'First Class & 3 Adults', value: 'First'},
   ];
 
-  // Toggle checkbox handler
   const toggleCheckbox = useCallback(() => {
     setChecked(prevState => !prevState);
   }, []);
 
-  // Single date change handler for both departure and return
   const onDateChange = (
     event: any,
     selectedDate: Date | undefined,
@@ -69,7 +64,7 @@ const FlightBookingScreen = ({navigation}: any) => {
   ) => {
     if (selectedDate) {
       setDateFunc(selectedDate);
-      setShow(false); // Close the date picker modal after date selection
+      setShow(false);
     }
   };
 
@@ -80,12 +75,12 @@ const FlightBookingScreen = ({navigation}: any) => {
   ) => {
     if (selectedDate) {
       setDateFunc(selectedDate);
-      setShowReturn(false); // Close the return date picker modal after date selection
+      setShowReturn(false);
     }
   };
 
-  const showDatePicker = () => setShow(true); // Open the departure date picker modal
-  const showDatePickerReturn = () => setShowReturn(true); // Open the return date picker modal
+  const showDatePicker = () => setShow(true); 
+  const showDatePickerReturn = () => setShowReturn(true);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -104,7 +99,7 @@ const FlightBookingScreen = ({navigation}: any) => {
           Origin: 'DEL',
           Destination: 'BOM',
           FlightCabinClass: '1',
-          PreferredDepartureTime: '2025-03-01T08:00:00', // Ensure correct date format
+          PreferredDepartureTime: '2025-03-01T08:00:00',
           PreferredArrivalTime: '2025-03-01T14:00:00',
         },
       ],
@@ -141,12 +136,10 @@ const FlightBookingScreen = ({navigation}: any) => {
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.keyboardAvoidingView}>
-            {/* Booking Options */}
             <BookingOptions
               selected={selectedOption}
               onSelect={setSelectedOption}
             />
-
             <CustomDropdown
               label="From"
               placeHolder="Select an Option"
@@ -154,7 +147,6 @@ const FlightBookingScreen = ({navigation}: any) => {
               selectedValue={fromOpen}
               onSelect={setFromOpen}
             />
-
             <CustomDropdown
               label="To"
               placeHolder="Select an Option"
@@ -162,7 +154,6 @@ const FlightBookingScreen = ({navigation}: any) => {
               selectedValue={toOpen}
               onSelect={setToOpen}
             />
-
             <CustomDropdown
               label="Class & Travellers"
               placeHolder="Select an Option"
@@ -170,8 +161,6 @@ const FlightBookingScreen = ({navigation}: any) => {
               selectedValue={classOpen}
               onSelect={setClassOpen}
             />
-
-            {/* Date Picker */}
             <DatePickerComponent
               date={date}
               show={show}
@@ -181,10 +170,7 @@ const FlightBookingScreen = ({navigation}: any) => {
               showDatePicker={showDatePicker}
               label="Departure"
             />
-
-            {/* Custom Checkbox */}
             <CustomCheckbox checked={checked} toggleCheckbox={toggleCheckbox} />
-
             {checked && (
               <DatePickerComponent
                 date={returnDate}
@@ -196,7 +182,6 @@ const FlightBookingScreen = ({navigation}: any) => {
                 label="Return"
               />
             )}
-
             <PrimaryButton title={'SEARCH NOW'} onPress={handleSearch} />
           </KeyboardAvoidingView>
         </ScrollView>

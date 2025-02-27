@@ -58,7 +58,6 @@ const FlightCardSelectable = ({
   };
   return (
     <View style={[styles.flightCard]}>
-      {/* Airline Details */}
       <View style={styles.airlineDetails}>
         <Image
           source={require('../../assets/indigo.png')}
@@ -70,10 +69,7 @@ const FlightCardSelectable = ({
         </View>
         <RoundCheckbox isSelected={isSelected} onSelect={onSelect} />
       </View>
-
       <View style={styles.separator} />
-
-      {/* Flight Time */}
       <View style={styles.flightTime}>
         <Text style={styles.timeText}>
           {moment(tmp?.Destination?.ArrTime).format('DD-MM-YY')}
@@ -83,7 +79,6 @@ const FlightCardSelectable = ({
           {moment(tmp?.Origin?.DepTime).format('DD-MM-YY')}
         </Text>
       </View>
-
       <FlightTime
         time1={moment(tmp?.Destination?.ArrTime).format('HH:mm')}
         time2={moment(tmp?.Origin?.DepTime).format('HH:mm')}
@@ -92,8 +87,6 @@ const FlightCardSelectable = ({
         location1={tmp?.Origin?.Airport?.AirportName}
         location2={tmp?.Destination?.Airport?.AirportName}
       />
-
-      {/* Baggage Details */}
       <View style={styles.baggageDetails}>
         <View
           style={{
@@ -162,8 +155,6 @@ const FlightCardSelectable = ({
               }}
             />
           </View>
-
-          {/* Flight Time */}
           <View style={styles.flightTime}>
             <Text style={styles.timeText}>
               {moment(tmp?.Destination?.ArrTime).format('DD-MM-YY')}
@@ -174,13 +165,10 @@ const FlightCardSelectable = ({
               {moment(tmp?.Origin?.DepTime).format('DD-MM-YY')}
             </Text>
           </View>
-
           <FlightTime
             time1={moment(tmp?.StopPointArrivalTime).format('HH:mm')}
             time2={moment(tmp?.StopPointDepartureTime).format('HH:mm')}
           />
-
-          {/* Baggage Details */}
           <View style={styles.baggageDetails}>
             <View
               style={{
@@ -209,8 +197,6 @@ const FlightCardSelectable = ({
           </View>
         </>
       )}
-
-      {/* Price & Details Button */}
       <PriceDetails
         price={`${fare?.Currency} ${fare?.PublishedFare}`}
         detailsButton={detailsButton}

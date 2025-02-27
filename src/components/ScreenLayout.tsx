@@ -20,7 +20,6 @@ const ScreenLayout: React.FC<ScreenLayoutProps> = ({
   step,
 }) => {
   return (
-    // <KeyboardAwareWrapper>
       <View style={styles.container}>
         <Header
           back={back}
@@ -31,7 +30,6 @@ const ScreenLayout: React.FC<ScreenLayoutProps> = ({
         />
         <View style={styles.content}>{children}</View>
       </View>
-    // </KeyboardAwareWrapper>
   );
 };
 

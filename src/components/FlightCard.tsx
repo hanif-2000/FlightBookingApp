@@ -82,25 +82,19 @@ const FlightCard = ({
   return (
     <>
       <View style={[styles.flightCard]}>
-        {/* Flight Time */}
         <View style={styles.flightTime}>
           <Text style={styles.timeText}>{moment(date).format('DD MM YY')}</Text>
           <Text style={styles.durationText}>{duration}</Text>
           <Text style={styles.timeText}>{moment(date).format('DD MM YY')}</Text>
         </View>
-
         <FlightTime
           time1={moment(time1).format('HH:mm')}
           time2={moment(time2).format('HH:mm')}
         />
         <FlightLocation location1={location1} location2={location2} />
         <AirPortName location1={AirportName} location2={AirportName2} />
-
         <TerminalName location1={Terminal} location2={Terminal2} />
-
         <View style={styles.separator} />
-
-        {/* Baggage Details */}
         <View style={[styles.baggageDetails, {marginBottom: 10}]}>
           <View
             style={{
@@ -157,13 +151,11 @@ const FlightCard = ({
               </View>
             </View>
             <View style={styles.flightCard}>
-              {/* Flight Time */}
               <View style={styles.flightTime}>
                 <Text style={styles.timeText}>{dateChangeFlight}</Text>
                 <Text style={styles.durationText}>{durationChangeFlight}</Text>
                 <Text style={styles.timeText}>{dateChangeFlight}</Text>
               </View>
-
               <FlightTime
                 time1={moment(time1ChangeFlight).format('HH:mm')}
                 time2={moment(time2ChangeFlight).format('HH:mm')}
@@ -174,8 +166,6 @@ const FlightCard = ({
                 location2={' AirPort Name AirPortName AirPortName'}
               />
               <TerminalName location1={'Terminal 1'} location2={'Terminal 2'} />
-
-              {/* Baggage Details */}
               <View style={styles.baggageDetails}>
                 <View
                   style={{

@@ -13,7 +13,6 @@ const initialState: FareQuoteState = {
   error: null,
 };
 
-// ✅ Async Thunk to fetch FareQuote
 export const fetchFareDetails = createAsyncThunk(
   'fareQuote/fetchFareDetails',
   async ({traceId, ResultIndex}: any, {rejectWithValue}) => {

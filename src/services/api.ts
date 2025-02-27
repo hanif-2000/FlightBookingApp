@@ -8,7 +8,6 @@ export const searchFlights = async (requestBody: any) => {
   try {
     const response = await axios.post(`${API_URL}Search`, requestBody);
 
-    // Check if the response has an error
     if (
       response.data.Response.Error &&
       response.data.Response.Error.ErrorCode !== 0
@@ -27,10 +26,10 @@ export const fetchFareQuote = async ({traceId, ResultIndex}: any) => {
     const response = await axios.post(
       `https://api.tektravels.com/BookingEngineService_Air/AirService.svc/rest/FareQuote/`,
       {
-        EndUserIp: '192.168.29.33', // Your IP
-        TokenId: AUTH_TOKEN, // Stored in Redux
-        TraceId: traceId, // Passed from Redux
-        ResultIndex: ResultIndex, // Passed via navigation
+        EndUserIp: '192.168.29.33',
+        TokenId: AUTH_TOKEN,
+        TraceId: traceId,
+        ResultIndex: ResultIndex,
       },{
         headers: {
           'Content-Type': 'application/json',

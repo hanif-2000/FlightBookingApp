@@ -17,7 +17,7 @@ const PrimaryButton = ({ title, onPress }: { title: string; onPress: () => void 
 const styles = StyleSheet.create({
   button: {
     borderRadius: 10,
-    overflow: 'hidden', // Ensure the button has rounded corners
+    overflow: 'hidden',
     marginTop: 10,
   },
   gradient: {

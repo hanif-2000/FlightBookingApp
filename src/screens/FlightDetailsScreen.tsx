@@ -48,7 +48,7 @@ const FlightDetailsScreen = ({navigation}:any) => {
   }, [traceId, ResultIndex]);
 
   const renderFlightItem = ({item}: {item: any}) => {
-    // Extract segment details
+
     const firstSegment = item.Segments[0]?.[0];
     const lastSegment = item.Segments[0]?.[item.Segments[0].length - 1];
     setSegmentData(firstSegment);

@@ -57,7 +57,6 @@ const FilterActionSheet: React.FC<FilterActionSheetProps> = ({
         gestureEnabled
         containerStyle={styles.actionSheet}>
         <View style={styles.sheetContent}>
-          {/* Header Section */}
           <View style={styles.header}>
             <Text style={styles.sheetTitle}>{title}</Text>
 
@@ -95,10 +94,7 @@ const FilterActionSheet: React.FC<FilterActionSheetProps> = ({
               </TouchableOpacity>
             </View>
           </View>
-
           <View style={styles.separator} />
-
-          {/* Scrollable Options */}
           <ScrollView
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={styles.selectableList}>

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import flightsReducer from './slices/flightsSlice'; // ✅ Correct path
+import flightsReducer from './slices/flightsSlice';
 import fareQuoteReducer from './slices/fareQuoteSlice'
 export const store = configureStore({
   reducer: {

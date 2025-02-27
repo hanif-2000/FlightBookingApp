@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
 import Collapsible from 'react-native-collapsible';
 import FlightDetailsCard from '../components/FlightDetailsCard';
 import FlightCard from '../components/FlightCard';
@@ -43,7 +42,6 @@ const flights = [
 const ReviewFlightBooking = ({navigation}: any) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Use `useCallback` to prevent unnecessary re-renders
   const toggleCollapse = useCallback(() => {
     setIsCollapsed(prevState => !prevState);
   }, []);
@@ -51,7 +49,6 @@ const ReviewFlightBooking = ({navigation}: any) => {
   return (
     <ScreenLayout step={1} back>
       <ScrollView keyboardShouldPersistTaps="handled" style={styles.scrollView}>
-        {/* Flight Information */}
         <FlightDetailsCard
           airlineName="Indigo"
           flightCode="QP - 1355"
@@ -75,11 +72,9 @@ const ReviewFlightBooking = ({navigation}: any) => {
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
         />
-
         <FarePolicies />
       </ScrollView>
 
-      {/* Fare Summary */}
       <View style={styles.bottomView}>
         <Text style={styles.fareSummaryText}>Fare Summary</Text>
         <TouchableOpacity style={styles.toggleButton} onPress={toggleCollapse}>
@@ -110,7 +105,6 @@ const ReviewFlightBooking = ({navigation}: any) => {
           </View>
         </Collapsible>
 
-        {/* Footer Buttons */}
         <View style={styles.footerButtons}>
           <View style={styles.applyButton}>
             <Text style={styles.applyButtonText}>+ 2,150 per adult</Text>
@@ -122,7 +116,6 @@ const ReviewFlightBooking = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* </View> */}
     </ScreenLayout>
   );
 };

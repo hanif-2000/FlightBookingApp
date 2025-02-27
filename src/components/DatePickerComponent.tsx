@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface DatePickerProps {
@@ -17,7 +17,6 @@ const DatePickerComponent = ({
   showDatePicker,
   label,
 }: DatePickerProps) => {
-  // Format the selected date
   const formattedDate = date ? date.toDateString() : 'Select Date';
 
   return (
@@ -26,9 +25,8 @@ const DatePickerComponent = ({
 
       <TouchableOpacity
         style={styles.inputContainer}
-        onPress={showDatePicker} // Show the date picker when pressed
-        activeOpacity={0.7}
-      >
+        onPress={showDatePicker}
+        activeOpacity={0.7}>
         <Text style={styles.inputText}>{formattedDate}</Text>
       </TouchableOpacity>
 
@@ -39,7 +37,7 @@ const DatePickerComponent = ({
           is24Hour={true}
           display="default"
           onChange={onChange}
-          minimumDate={new Date()} // Prevent past date selection
+          minimumDate={new Date()}
         />
       )}
     </View>
@@ -53,14 +51,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    elevation: 5, // Elevation for Android shadow
+    elevation: 5,
   },
   showPicker: {
     zIndex: 1000,
-    elevation: 1000, // Ensure it appears on top of other elements
+    elevation: 1000,
   },
   labelText: {
     fontSize: 16,

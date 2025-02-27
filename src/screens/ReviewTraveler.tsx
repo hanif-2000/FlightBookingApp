@@ -35,13 +35,10 @@ const ReviewAlert = () => (
 const TravelersCard = () => {
   return (
     <View style={travelCardStyles.container}>
-      {/* Header */}
       <Text style={travelCardStyles.title}>Travelers</Text>
       <Text style={travelCardStyles.subtitle}>
         Review and update Traveler details
       </Text>
-
-      {/* Traveler Categories */}
       <View style={travelCardStyles.row}>
         <View style={travelCardStyles.box}>
           <Text style={travelCardStyles.label}>adults</Text>
@@ -65,15 +62,11 @@ const TravelersCard = () => {
 
 const PassengerListScreen = ({navigation}: any) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
-  // Use `useCallback` to prevent unnecessary re-renders
   const toggleCollapse = useCallback(() => {
     setIsCollapsed(prevState => !prevState);
   }, []);
 
   const actionSheetRef = useRef<ActionSheetRef>(null);
-
-  // Old data (can be fetched from API or stored locally)
   const oldTravelerData = {
     firstName: 'John',
     lastName: 'Doe',
@@ -111,7 +104,6 @@ const PassengerListScreen = ({navigation}: any) => {
             ))}
         </View>
       </ScrollView>
-      {/* Fare Summary */}
       <View style={styles.bottomView}>
         <Text style={styles.fareSummaryText}>Fare Summary</Text>
         <TouchableOpacity style={styles.toggleButton} onPress={toggleCollapse}>
@@ -142,7 +134,6 @@ const PassengerListScreen = ({navigation}: any) => {
           </View>
         </Collapsible>
 
-        {/* Footer Buttons */}
         <View style={styles.footerButtons}>
           <View style={styles.applyButton}>
             <Text style={styles.applyButtonText}>+ 2,150 per adult</Text>
