@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
+  Alert,
 } from 'react-native';
 import BookingOptions from '../components/BookingOptions';
 import DatePickerComponent from '../components/DatePickerComponent';
@@ -79,7 +80,7 @@ const FlightBookingScreen = ({navigation}: any) => {
     }
   };
 
-  const showDatePicker = () => setShow(true); 
+  const showDatePicker = () => setShow(true);
   const showDatePickerReturn = () => setShowReturn(true);
 
   const handleSearch = async () => {
@@ -108,11 +109,13 @@ const FlightBookingScreen = ({navigation}: any) => {
 
     try {
       const response = await dispatch(fetchFlights(searchParams) as any);
-      if (response) {
+      if (response&&response.payload!='Invalid Token') {
         setLoading(false);
         navigation.navigate('BookingScreen');
+        console.warn('response==-- ',response.payload)
       } else {
         setLoading(false);
+        Alert.alert('Invalid Token')
         console.log('⚠️ No response found.');
       }
     } catch (error) {
@@ -120,7 +123,6 @@ const FlightBookingScreen = ({navigation}: any) => {
       console.log('error:', error);
     }
   };
-
 
   return (
     <ScreenLayout label={'Gaya, India'} user chat>
