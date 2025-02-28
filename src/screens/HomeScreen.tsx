@@ -116,6 +116,7 @@ const FlightBookingScreen = ({navigation}: any) => {
       } else {
         setLoading(false);
         Alert.alert('Invalid Token')
+        navigation.navigate('BookingScreen');
         console.log('⚠️ No response found.');
       }
     } catch (error) {
@@ -166,7 +167,7 @@ const FlightBookingScreen = ({navigation}: any) => {
             <DatePickerComponent
               date={date}
               show={show}
-              onChange={(event, selectedDate) =>
+              onChange={({event, selectedDate}:any) =>
                 onDateChange(event, selectedDate, setDate)
               }
               showDatePicker={showDatePicker}
@@ -177,7 +178,7 @@ const FlightBookingScreen = ({navigation}: any) => {
               <DatePickerComponent
                 date={returnDate}
                 show={showReturn}
-                onChange={(event, selectedDate) =>
+                onChange={({event, selectedDate}:any) =>
                   onReturnDateChange(event, selectedDate, setReturnDate)
                 }
                 showDatePicker={showDatePickerReturn}

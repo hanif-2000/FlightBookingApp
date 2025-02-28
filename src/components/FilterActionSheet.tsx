@@ -55,6 +55,7 @@ const FilterActionSheet: React.FC<FilterActionSheetProps> = ({
       <ActionSheet
         ref={filterActionSheetRef}
         gestureEnabled
+        closeOnPressBack={true}
         containerStyle={styles.actionSheet}>
         <View style={styles.sheetContent}>
           <View style={styles.header}>
@@ -143,7 +144,9 @@ const FilterActionSheet: React.FC<FilterActionSheetProps> = ({
               <Text style={styles.resetButtonText}>Reset</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.applyButton} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.applyButton}
+              onPress={() => filterActionSheetRef.current?.hide()}>
               <Text style={styles.applyButtonText}>Apply</Text>
             </TouchableOpacity>
           </View>

@@ -62,10 +62,14 @@ const FILTER_LABELS = ['Cheapest', 'Fastest', 'Non-stop'];
 interface SelectableButtonProps {
   label?: string;
   onPress: () => void;
-  isSelected?:boolean;
+  isSelected?: boolean;
 }
 
-const SelectableButton = ({label, isSelected, onPress}:SelectableButtonProps) => (
+const SelectableButton = ({
+  label,
+  isSelected,
+  onPress,
+}: SelectableButtonProps) => (
   <TouchableOpacity
     style={[
       styles.selectableButton,
@@ -93,6 +97,7 @@ const FilterButtons = ({
   setSelectedFilters,
   setSelectedFiltersOptions,
   setSelectedClass,
+  toggleSortSelection,
 }: any) => {
   return (
     <View style={styles.container}>
@@ -116,14 +121,18 @@ const FilterButtons = ({
           title="Sort"
           options={SORT_OPTIONS}
           selectedOptions={selectedSortOptions}
-          onSelect={option => toggleSelection(setSelectedSortOptions, option)}
+          onSelect={option =>
+            toggleSortSelection(setSelectedSortOptions, option)
+          }
         />
         <FilterActionSheet
           title="Filters"
           options={FILTER_OPTIONS}
           classType={CLASSTYPES}
           selectedOptions={selectedFiltersOptions}
-          onSelect={option => toggleSelection(setSelectedFiltersOptions, option)}
+          onSelect={option =>
+            toggleSelection(setSelectedFiltersOptions, option)
+          }
           selectedClass={selectedClass}
           onSelectClass={option => toggleSelection(setSelectedClass, option)}
         />
@@ -131,8 +140,6 @@ const FilterButtons = ({
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {

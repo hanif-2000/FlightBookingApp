@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useCallback} from 'react';
 import {StyleSheet, FlatList, View, TouchableOpacity, Text} from 'react-native';
 import FlightDetails from '../components/FlightDetails';
 import FilterButtons from '../components/FilterButtons';
@@ -21,16 +21,31 @@ const BookingScreen = ({navigation}: any) => {
   >(new Set());
   const [selectedClass, setSelectedClass] = useState<Set<string>>(new Set());
 
-  const toggleSelection = (
-    setSelection: React.Dispatch<React.SetStateAction<Set<string>>>,
-    option: string,
-  ) => {
-    setSelection(prev => {
-      const newSet = new Set(prev);
-      newSet.has(option) ? newSet.delete(option) : newSet.add(option);
-      return newSet;
+  const toggleSelection = useCallback(
+    (
+      setter: React.Dispatch<React.SetStateAction<Set<string>>>,
+      option: string,
+    ) => {
+      setter(prev => {
+        const newSelection = new Set(prev);
+        newSelection.has(option)
+          ? newSelection.delete(option)
+          : newSelection.add(option);
+        return newSelection;
+      });
+    },
+    [],
+  );
+
+  const toggleSortSelection = useCallback((option: string) => {
+    setSelectedSortOptions(prev => {
+      const newSelection = new Set(prev);
+      newSelection.has(option)
+        ? newSelection.delete(option)
+        : newSelection.add(option);
+      return newSelection;
     });
-  };
+  }, []);
 
   const selectedFlightDetails = useMemo(
     () => flights.find(flight => flight.id == selectedFlight),
@@ -68,6 +83,7 @@ const BookingScreen = ({navigation}: any) => {
         selectedFiltersOptions={selectedFiltersOptions}
         selectedClass={selectedClass}
         toggleSelection={toggleSelection}
+        toggleSortSelection={toggleSortSelection}
         setSelectedSortOptions={setSelectedSortOptions}
         setSelectedFilters={setSelectedFilters}
         setSelectedFiltersOptions={setSelectedFiltersOptions}

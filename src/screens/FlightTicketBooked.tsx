@@ -527,7 +527,7 @@ const LayoverStyles = StyleSheet.create({
   },
 });
 
-const BillingDetails = () => {
+const BillingDetails = ({navigation}:any) => {
   return (
     <View style={BillingDetailsStyles.container}>
       <View style={BillingDetailsStyles.actionContainer}>

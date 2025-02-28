@@ -13,9 +13,11 @@ interface DatePickerProps {
   date: Date;
   onChange: (selectedDate: Date) => void;
   label: string;
+  show?:boolean;
+  showDatePicker?:any
 }
 
-const DatePickerComponent = ({date, onChange, label}: DatePickerProps) => {
+const DatePickerComponent = ({date, onChange, label,show,showDatePicker}: DatePickerProps) => {
   const [iosShowModal, setIosShowModal] = useState(false);
   const [tempDate, setTempDate] = useState(date);
 
