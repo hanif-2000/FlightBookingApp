@@ -63,6 +63,7 @@ const FlightBookingScreen = ({navigation}: any) => {
     selectedDate: Date | undefined,
     setDateFunc: (date: Date) => void,
   ) => {
+    console.warn(selectedDate,'selectedDate')
     if (selectedDate) {
       setDateFunc(selectedDate);
       setShow(false);

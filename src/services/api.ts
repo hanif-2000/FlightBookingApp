@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL =
   'http://api.tektravels.com/BookingEngineService_Air/AirService.svc/rest/';
-const AUTH_TOKEN = '58c17155-9fe3-42e8-8c63-b962b878c952';
+const AUTH_TOKEN = '6fc566be-162b-437b-a7de-8c90d868979b';
 
 export const searchFlights = async (requestBody: any) => {
   try {

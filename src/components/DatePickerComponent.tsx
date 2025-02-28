@@ -13,15 +13,12 @@ interface DatePickerProps {
   date: Date;
   onChange: (selectedDate: Date) => void;
   label: string;
-  show?:boolean;
-  showDatePicker?:any
 }
 
-const DatePickerComponent = ({date, onChange, label,show,showDatePicker}: DatePickerProps) => {
+const DatePickerComponent = ({date, onChange, label}: DatePickerProps) => {
   const [iosShowModal, setIosShowModal] = useState(false);
+  const [androidShow, setAndroidShow] = useState(false);
   const [tempDate, setTempDate] = useState(date);
-
-  const formattedDate = date ? date.toDateString() : 'Select Date';
 
   return (
     <View style={styles.container}>
@@ -33,15 +30,18 @@ const DatePickerComponent = ({date, onChange, label,show,showDatePicker}: DatePi
           if (Platform.OS === 'ios') {
             setTempDate(date);
             setIosShowModal(true);
+          } else {
+            setAndroidShow(true);
           }
         }}
         activeOpacity={0.7}>
-        <Text style={styles.inputText}>{formattedDate}</Text>
+        <Text style={styles.inputText}>{date.toDateString()}</Text>
       </TouchableOpacity>
 
+      {/* iOS Date Picker */}
       {Platform.OS === 'ios' && iosShowModal && (
         <Modal
-          transparent={true}
+          transparent
           animationType="slide"
           visible={iosShowModal}
           onRequestClose={() => setIosShowModal(false)}>
@@ -52,7 +52,9 @@ const DatePickerComponent = ({date, onChange, label,show,showDatePicker}: DatePi
                 mode="date"
                 display="spinner"
                 onChange={(event, selectedDate) => {
-                  if (selectedDate) setTempDate(selectedDate);
+                  if (selectedDate) {
+                    setTempDate(selectedDate);
+                  }
                 }}
                 minimumDate={new Date()}
               />
@@ -69,13 +71,17 @@ const DatePickerComponent = ({date, onChange, label,show,showDatePicker}: DatePi
         </Modal>
       )}
 
-      {Platform.OS === 'android' && (
+      {/* Android Date Picker (Shows Only When Needed) */}
+      {Platform.OS === 'android' && androidShow && (
         <DateTimePicker
           value={date}
           mode="date"
           display="default"
           onChange={(event, selectedDate) => {
-            if (selectedDate) onChange(selectedDate);
+            setAndroidShow(false);
+            if (selectedDate) {
+              onChange(selectedDate);
+            }
           }}
           minimumDate={new Date()}
         />
